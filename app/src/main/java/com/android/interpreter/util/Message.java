@@ -8,12 +8,9 @@ import java.util.Date;
 public class Message {
 
     private String message;
-    private Users sender;
+//    private User sender;
     private Date date;
     private String originalLanguage;
-
-    public Message(){
-    }
 
     public String getMessage() {
         return message;
@@ -23,13 +20,13 @@ public class Message {
         this.message = message;
     }
 
-    public Users getSender() {
-        return sender;
-    }
-
-    public void setSender(Users sender) {
-        this.sender = sender;
-    }
+//    public User getSender() {
+//        return sender;
+//    }
+//
+//    public void setSender(User sender) {
+//        this.sender = sender;
+//    }
 
     public Date getDate() {
         return date;
