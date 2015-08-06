@@ -1,5 +1,7 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -30,101 +32,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mList = (ListView) findViewById(R.id.listView);
-        mAdapter = new MyAdapter();
-        mList.setAdapter(mAdapter);
-        Firebase.setAndroidContext(this);
-        Button btn = (Button) findViewById(R.id.button);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                EditText text = (EditText) findViewById(R.id.message);
-                String current_message = text.getText().toString();
-
-                Firebase ref = new Firebase("https://flickering-heat-70.firebaseio.com/chat/messages");
-
-                Message msg = new Message(current_message, new Date());
-
-                //Map<String, String> messages = new HashMap<String, String>();
-                //messages.put("text", current_message);
-
-                ref.push().setValue(msg);
-                all_messages.add(msg);
-            }
-        });
 
 
-        Firebase ref = new Firebase("https://flickering-heat-70.firebaseio.com/chat/messages/");
+        SharedPreferences settings = getSharedPreferences("CURRENT_USER", 0);
+        boolean hasCurrentUser = settings.getBoolean("current_user", false);
 
-        ref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                System.out.println(snapshot.getKey());
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-            }
+        if(hasCurrentUser) {
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            Intent convIntent = new Intent(this, ConversationsActivity.class);
+            startActivity(convIntent);
 
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        }
+        else{
 
 
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
+//            SharedPreferences.Editor editor = settings.edit();
+//            editor.putBoolean("silentMode", mSilentMode);
+//
+//            // Commit the edits!
+//            editor.commit();
+//            Intent loginIntent = new Intent(this, ConversationsActivity.class);
+//            startActivity(loginIntent);
+        }
 
-                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
-                System.out.println("on data changeee");
-
-                System.out.println(snapshot.getKey());
-                System.out.println(snapshot.getKey());
-                System.out.println(snapshot.getKey());
-                System.out.println(snapshot.getKey());
-
-
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Message messages = postSnapshot.getValue(Message.class);
-                    System.out.println(messages.getMessage() + "    ");
-                }
-
-
-
-                //all_messages.add(snapshot.child("text").getValue().toString());
-
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-
-
-        });
+        this.finish();
     }
 
     @Override

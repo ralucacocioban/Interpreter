@@ -2,5 +2,6 @@
     <string name="app_name">Interpreter</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="add_conv">"+  Add"</string>
     <string name="action_settings">Settings</string>
 </resources>

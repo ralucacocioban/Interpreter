@@ -3,13 +3,25 @@ package com.android.interpreter.util;
 /**
  * The class representing the User object
  */
-public class User {
+public class Users {
 
     private String nickname;
-    private String mail;
+    private String email;
     private String password;
     private String sendingLanguage;
     private String receivingLanguage;
+
+
+    public Users() {
+    }
+
+    public Users(String email, String pass, String sendingLanguage, String receivingLanguage, String nickname) {
+        this.nickname = nickname;
+        this.sendingLanguage = sendingLanguage;
+        this.receivingLanguage = receivingLanguage;
+        this.password = pass;
+        this.email = email;
+    }
 
     public String getNickname() {
         return nickname;
@@ -19,12 +31,12 @@ public class User {
         this.nickname = nickname;
     }
 
-    public String getMail() {
-        return mail;
+    public String getemail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setemail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
