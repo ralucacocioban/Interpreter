@@ -32,9 +32,6 @@ public class ConversationsActivity extends AppCompatActivity {
     private ListView mList;
     private MyAdapter mAdapter;
     private List<Conversation> conversations = new ArrayList<>();
-    private Users currentUser = null;
-
-
     private String usersPath = new String("https://flickering-heat-70.firebaseio.com/interpreter/users");
 
     private void handleUsers(){
@@ -42,9 +39,6 @@ public class ConversationsActivity extends AppCompatActivity {
         Firebase userRef = new Firebase(usersPath);
 
         userRef.push().setValue(user);
-        this.currentUser = user;
-
-
 
         userRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -122,16 +116,8 @@ public class ConversationsActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         Button btn = (Button) findViewById(R.id.addConversation);
 
-        handleUsers();
+        //handleUsers();
         handleConversations();
-
-        if(currentUser != null){
-
-            System.out.println("current user nu e null");
-
-
-
-        }
 
 
         btn.setOnClickListener(new View.OnClickListener() {

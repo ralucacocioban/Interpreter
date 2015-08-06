@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -25,34 +27,23 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ListView mList;
-    private MyAdapter mAdapter;
-    private List<Message> all_messages = new ArrayList<>();
+
+    Firebase rootFirebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         SharedPreferences settings = getSharedPreferences("CURRENT_USER", 0);
-        boolean hasCurrentUser = settings.getBoolean("current_user", false);
+        String currentUser = settings.getString("CURRENT_USER", null);
 
-        if(hasCurrentUser) {
-
+        if(currentUser != null) {
             Intent convIntent = new Intent(this, ConversationsActivity.class);
             startActivity(convIntent);
-
         }
         else{
-
-
-//            SharedPreferences.Editor editor = settings.edit();
-//            editor.putBoolean("silentMode", mSilentMode);
-//
-//            // Commit the edits!
-//            editor.commit();
-//            Intent loginIntent = new Intent(this, ConversationsActivity.class);
-//            startActivity(loginIntent);
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
         }
 
         this.finish();
@@ -79,41 +70,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    public class MyAdapter extends BaseAdapter {
-
-
-        @Override
-        public int getCount() {
-            return all_messages.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return all_messages.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView tv;
-            if (convertView == null) {
-                tv = new TextView(MainActivity.this);
-                tv.setText(all_messages.get(position).getMessage());
-            } else {
-                tv = (TextView) convertView;
-                tv.setText(all_messages.get(position).getMessage());
-            }
-            tv.setPadding(16, 16, 16, 16);
-            tv.setTextSize(22);
-            return tv;
-        }
-    }
-
 
 }

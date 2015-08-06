@@ -1,5 +1,6 @@
 package com.android.interpreter.interpreter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.interpreter.Config;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -23,8 +25,7 @@ public class LoginActivity extends ActionBarActivity {
     TextView email;
     TextView password;
     TextView password2;
-    Firebase rootref;
-
+    Firebase rootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,7 @@ public class LoginActivity extends ActionBarActivity {
         newUserButton = (Button)findViewById(R.id.new_user_btn);
 
         Firebase.setAndroidContext(this);
-        rootref = new Firebase("https://flickering-heat-70.firebaseio.com/interpreter");
-
+        rootRef = new Firebase(Config.mainFireBaseRef);
     }
 
     @Override
@@ -68,9 +68,6 @@ public class LoginActivity extends ActionBarActivity {
 
 
     public void newUser(View view) {
-
-
-        Toast.makeText(getBaseContext(), "register btn", Toast.LENGTH_LONG).show();
         password2.setVisibility(View.VISIBLE);
         loginButton.setVisibility(View.INVISIBLE);
         newUserButton.setVisibility(View.GONE);
@@ -82,11 +79,17 @@ public class LoginActivity extends ActionBarActivity {
             Toast.makeText(getBaseContext(), "Passwords are not identical" , Toast.LENGTH_LONG).show();
         }
         else {
-            rootref.createUser(email.getText().toString(), password.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+            rootRef.createUser(email.getText().toString(), password.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
                     Toast.makeText(getBaseContext(), "created user!", Toast.LENGTH_LONG).show();
                     System.out.println(result.get("uid"));
+
+                    SharedPreferences settings = getPreferences(0);
+
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("CURRENT_USER", result.get("uid").toString());
+                    editor.commit();
                 }
 
                 @Override
@@ -97,24 +100,25 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
+
     public void login(View view){
 
-        rootref.authWithPassword(
+        rootRef.authWithPassword(
                 email.getText().toString(), password.getText().toString(),
 
                 new Firebase.AuthResultHandler() {
 
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
-                Toast.makeText(getBaseContext(), "Login success!", Toast.LENGTH_LONG).show();
-//                Intent toMainActivity = new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(toMainActivity);
-            }
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                // there was an error
-                Toast.makeText(getBaseContext(), "Login failed!", Toast.LENGTH_LONG).show();            }
-        });
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        System.out.println("User ID: " + authData.getUid() + ", Providerdfjhbdfdfjhbdfbjf: " + authData.getProvider());
+                        Toast.makeText(getBaseContext(), "Login success!", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                        // there was an error
+                        Toast.makeText(getBaseContext(), "Login failed!", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
