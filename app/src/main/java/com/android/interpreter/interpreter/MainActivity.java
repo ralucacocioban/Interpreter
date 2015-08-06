@@ -11,8 +11,6 @@ import com.firebase.client.Firebase;
 
 public class MainActivity extends AppCompatActivity {
 
-    Firebase rootFirebase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
