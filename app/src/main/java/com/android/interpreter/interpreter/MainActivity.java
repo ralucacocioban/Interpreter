@@ -1,5 +1,7 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -11,7 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -23,108 +27,26 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ListView mList;
-    private MyAdapter mAdapter;
-    private List<Message> all_messages = new ArrayList<>();
+
+    Firebase rootFirebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        mList = (ListView) findViewById(R.id.listView);
-        mAdapter = new MyAdapter();
-        mList.setAdapter(mAdapter);
-        Firebase.setAndroidContext(this);
-        Button btn = (Button) findViewById(R.id.button);
+        SharedPreferences settings = getSharedPreferences("CURRENT_USER", 0);
+        String currentUser = settings.getString("CURRENT_USER", null);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if(currentUser != null) {
+            Intent convIntent = new Intent(this, ConversationsActivity.class);
+            startActivity(convIntent);
+        }
+        else{
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
+        }
 
-                EditText text = (EditText) findViewById(R.id.message);
-                String current_message = text.getText().toString();
-
-                Firebase ref = new Firebase("https://flickering-heat-70.firebaseio.com/chat/messages");
-
-                Message msg = new Message(current_message, new Date());
-
-                //Map<String, String> messages = new HashMap<String, String>();
-                //messages.put("text", current_message);
-
-                ref.push().setValue(msg);
-                all_messages.add(msg);
-            }
-        });
-
-
-        Firebase ref = new Firebase("https://flickering-heat-70.firebaseio.com/chat/messages/");
-
-        ref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                System.out.println(snapshot.getKey());
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-
-                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
-                System.out.println("on data changeee");
-
-                System.out.println(snapshot.getKey());
-                System.out.println(snapshot.getKey());
-                System.out.println(snapshot.getKey());
-                System.out.println(snapshot.getKey());
-
-
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Message messages = postSnapshot.getValue(Message.class);
-                    System.out.println(messages.getMessage() + "    ");
-                }
-
-
-
-                //all_messages.add(snapshot.child("text").getValue().toString());
-
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-
-
-        });
+        this.finish();
     }
 
     @Override
@@ -148,41 +70,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    public class MyAdapter extends BaseAdapter {
-
-
-        @Override
-        public int getCount() {
-            return all_messages.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return all_messages.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView tv;
-            if (convertView == null) {
-                tv = new TextView(MainActivity.this);
-                tv.setText(all_messages.get(position).getMessage());
-            } else {
-                tv = (TextView) convertView;
-                tv.setText(all_messages.get(position).getMessage());
-            }
-            tv.setPadding(16, 16, 16, 16);
-            tv.setTextSize(22);
-            return tv;
-        }
-    }
-
 
 }

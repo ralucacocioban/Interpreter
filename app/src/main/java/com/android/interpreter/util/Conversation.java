@@ -7,31 +7,36 @@ import java.util.ArrayList;
  */
 public class Conversation {
 
-    private User to;
-    private User from;
+    private Users to;
+    private Users from;
     private String receivingLanguage;
     private String sendingLanguage;
-
     private ArrayList<Message> messages;
 
-    public User getTo() {
-        return to;
+
+
+    public Conversation(){
+
     }
 
-    public void setTo(User to) {
+    public Users getTo() {
+        return this.to;
+    }
+
+    public void setTo(Users to) {
         this.to = to;
     }
 
-    public User getFrom() {
-        return from;
+    public Users getFrom() {
+        return this.from;
     }
 
-    public void setFrom(User from) {
+    public void setFrom(Users from) {
         this.from = from;
     }
 
     public String getReceivingLanguage() {
-        return receivingLanguage;
+        return this.receivingLanguage;
     }
 
     public void setReceivingLanguage(String receivingLanguage) {
@@ -39,7 +44,7 @@ public class Conversation {
     }
 
     public String getSendingLanguage() {
-        return sendingLanguage;
+        return this.sendingLanguage;
     }
 
     public void setSendingLanguage(String sendingLanguage) {
@@ -47,7 +52,7 @@ public class Conversation {
     }
 
     public ArrayList<Message> getMessages() {
-        return messages;
+        return this.messages;
     }
 
     public void setMessages(ArrayList<Message> messages) {
