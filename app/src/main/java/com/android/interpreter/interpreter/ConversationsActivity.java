@@ -51,8 +51,6 @@ public class ConversationsActivity extends AppCompatActivity {
                 System.out.println(snapshot.getKey());
 
 
-
-
             }
 
             @Override
