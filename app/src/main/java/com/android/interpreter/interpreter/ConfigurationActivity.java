@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,8 @@ public class ConfigurationActivity extends ActionBarActivity {
     Button continueButton;
     String[] sendLanguageArray = new String[]{"English", "Russian", "Ukrainian", "Polish", "Dutch", "Romanian"};
     String[] receiveLanguageArray = new String[]{"English", "Russian", "Ukrainian", "Polish", "Dutch", "Romanian"};
+    String selectedSendingLang = "English";
+    String selectedReceivedLang = "English";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +44,33 @@ public class ConfigurationActivity extends ActionBarActivity {
 
         ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sendLanguageArray);
         sendingLanguageDropDown.setAdapter(sendingAdapter);
+        sendingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedSendingLang = sendLanguageArray[position];
+                //TODO: set selectedSendingLang in DB
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //TODO: set selectedSendingLang in DB if it is null in DB or Use previous from DB
+            }
+        });
 
         ArrayAdapter<String> receivingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, receiveLanguageArray);
         receivingLanguageDropDown.setAdapter(receivingAdapter);
+        receivingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedReceivedLang = receiveLanguageArray[position];
+                //TODO: set selectedReceivedLang in DB
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //TODO: set selectedReceivedLang in DB if it is null in DB or Use previous from DB
+            }
+        });
 
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +79,7 @@ public class ConfigurationActivity extends ActionBarActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
