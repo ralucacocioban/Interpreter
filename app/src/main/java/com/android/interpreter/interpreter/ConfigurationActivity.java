@@ -1,6 +1,5 @@
 package com.android.interpreter.interpreter;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -13,11 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
-import com.android.interpreter.util.UserDetails;
-import com.firebase.client.Firebase;
 
 public class ConfigurationActivity extends AbstractActivity {
     TextView nickName;
@@ -35,7 +31,7 @@ public class ConfigurationActivity extends AbstractActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        SharedPreferences settings = getSharedPreferences("CURRENT_USER", 0);
+        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
         String currentUser = settings.getString("CURRENT_USER", null);
 
         System.out.println("current user in Configuration Activity  " + currentUser);
