@@ -33,6 +33,8 @@ public class LoginActivity extends ActionBarActivity {
     TextView password2;
     Firebase rootRef;
 
+    private String uId = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,13 +90,13 @@ public class LoginActivity extends ActionBarActivity {
                     Toast.makeText(getBaseContext(), "created user!", Toast.LENGTH_LONG).show();
                     System.out.println(result.get("uid"));
 
-                    SharedPreferences settings = getPreferences(0);
-
+                    SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("CURRENT_USER", result.get("uid").toString());
-                    editor.commit();
 
-                    launchConversationsPage();
+                    // Commit the edits!
+                    editor.commit();
+                    launchConfigPage();
                 }
 
                 @Override
@@ -105,9 +107,9 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
-    private void launchConversationsPage() {
-        Intent convIntent = new Intent(this, ConversationsActivity.class);
-        startActivity(convIntent);
+    private void launchConfigPage() {
+        Intent intent = new Intent(this, ConfigurationActivity.class);
+        startActivity(intent);
     }
 
 
@@ -123,7 +125,7 @@ public class LoginActivity extends ActionBarActivity {
                         System.out.println("User ID: " + authData.getUid() + ", Providerdfjhbdfdfjhbdfbjf: " + authData.getProvider());
                         Toast.makeText(getBaseContext(), "Login success!", Toast.LENGTH_LONG).show();
 
-                        launchConversationsPage();
+                        launchConfigPage();
                     }
 
                     @Override
