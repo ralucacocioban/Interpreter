@@ -13,9 +13,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.interpreter.Config;
 import com.android.interpreter.interpreter.R;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class ConfigurationActivity extends ActionBarActivity {
     TextView nickName;
@@ -25,10 +28,6 @@ public class ConfigurationActivity extends ActionBarActivity {
     TextView receivingLanguage;
     Spinner receivingLanguageDropDown;
     Button continueButton;
-    String[] sendLanguageArray = new String[]{"English", "Russian", "Ukrainian", "Polish", "Dutch", "Romanian"};
-    String[] receiveLanguageArray = new String[]{"English", "Russian", "Ukrainian", "Polish", "Dutch", "Romanian"};
-    String selectedSendingLang = "English";
-    String selectedReceivedLang = "English";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +42,15 @@ public class ConfigurationActivity extends ActionBarActivity {
         receivingLanguageDropDown = (Spinner)findViewById(R.id.receivingLanguageDropDown);
         continueButton = (Button)findViewById(R.id.continueButton);
 
-        ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sendLanguageArray);
+        ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.sendLanguageArray);
         sendingLanguageDropDown.setAdapter(sendingAdapter);
         //TODO: show already chosen language in dropdown. Should be the same for receivingLanguageDropDown
+        //int selectedLanguagePosition = getDropdownLanguagePosition(currentUserLanguage, Config.sendLanguageArray);
         //sendingLanguageDropDown.setSelection(position, false);
         sendingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedSendingLang = sendLanguageArray[position];
+                //String selectedSendingLang = Config.sendLanguageArray[position];
                 Log.v("item", (String) parent.getItemAtPosition(position));
                 //TODO: set selectedSendingLang in DB
             }
@@ -61,12 +61,12 @@ public class ConfigurationActivity extends ActionBarActivity {
             }
         });
 
-        ArrayAdapter<String> receivingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, receiveLanguageArray);
+        ArrayAdapter<String> receivingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.receiveLanguageArray);
         receivingLanguageDropDown.setAdapter(receivingAdapter);
         receivingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedReceivedLang = receiveLanguageArray[position];
+                //String selectedReceivedLang = Config.receiveLanguageArray[position];
                 //TODO: set selectedReceivedLang in DB
             }
 
@@ -84,6 +84,15 @@ public class ConfigurationActivity extends ActionBarActivity {
         });
     }
 
+    public int getDropdownLanguagePosition(String currentUserLanguage, String [] languages) {
+        //TODO: we can make it better, but array is not large
+        for (int i = 0; i < languages.length; ++i) {
+            if (languages[i] == currentUserLanguage) {
+                return i;
+            }
+        }
+        return 0;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
