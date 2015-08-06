@@ -27,7 +27,7 @@
             <!-- This TexView contains the text -->
             <TextView
                 android:id="@+id/content"
-                android:text="Hello World, this is a muh longer message"
+                android:text="Hello World, this is a muh longer message, do we come to the next rule? Yeah.. weird"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

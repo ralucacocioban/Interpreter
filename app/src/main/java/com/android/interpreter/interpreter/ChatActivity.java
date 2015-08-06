@@ -1,5 +1,6 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -113,7 +114,7 @@ public class ChatActivity extends AppCompatActivity {
         // TODO - set Sender of the Message
         // TODO - set originalLanguage of the message;
 
-        // TODO - Check whether thib s is ok.
+        // TODO - Check whether this is ok.
         messageRef.push().setValue(newMessage);
 
         // Create the sent text from the EditText
@@ -147,7 +148,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             View view = null;
             ViewHolder holder;
 
@@ -167,21 +168,34 @@ public class ChatActivity extends AppCompatActivity {
                 holder.date = (TextView) view.findViewById(R.id.date);
                 view.setTag(holder);
 
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        //TODO - create beautifull transition to message details
+                        Intent showDetails = new Intent(ChatActivity.this, MessageDetailsActivity.class);
+                        showDetails.putExtra(MessageDetailsActivity.ORIGINAL_LANGUAGE, messages.get(position).getOriginalLanguage());
+                        showDetails.putExtra(MessageDetailsActivity.ORIGINAL_CONTENT, messages.get(position).getMessage());
+                        // TODO - Get the translate language and translated content
+                        showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, "");
+                        showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, "");
+                        // TODO - discuss whether we want the Date of the message as well in the detailled view.
+
+                        startActivity(showDetails);
+
+                        return true;
+                    }
+                });
+
             } else {
                 view = convertView;
                 holder = (ViewHolder) view.getTag();
             }
 
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-
-                    //TODO - create transition to message details
-                }
-            });
 
             // Assign values to the view
             Message current = messages.get(position);
+            // TODO - Get the translated message shown (not stored in DB)
             holder.content.setText(current.getMessage());
             holder.date.setText(df.format(current.getDate()));          // more info on df : top of the class
 

@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/balloon_outgoing_normal"
-            android:backgroundTint="#ffff3dda"
+            android:backgroundTint="#ffff8df2"
             android:layout_alignParentRight="true"
             android:padding="4dp" >
 
