@@ -23,7 +23,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.Map;
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends AbstractActivity {
 
     Button loginButton;
     Button newUserButton;
@@ -48,28 +48,6 @@ public class LoginActivity extends ActionBarActivity {
         newUserButton = (Button) findViewById(R.id.new_user_btn);
         Firebase.setAndroidContext(this);
         rootRef = new Firebase(Config.mainFireBaseRef);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 
