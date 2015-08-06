@@ -11,14 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
-import com.android.interpreter.interpreter.R;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 public class ConfigurationActivity extends ActionBarActivity {
     TextView nickName;
