@@ -36,8 +36,7 @@
         android:textSize="20sp"
         android:layout_below="@+id/nickNameEdit"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="48dp" />
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:id="@+id/sendingLanguageDropDown"
@@ -45,7 +44,9 @@
         android:layout_height="50dp"
         android:background="@android:drawable/btn_dropdown"
         android:layout_below="@id/sendingLanguage"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/receivingLanguage"
@@ -61,7 +62,9 @@
         android:layout_height="50dp"
         android:background="@android:drawable/btn_dropdown"
         android:layout_below="@id/receivingLanguage"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp" />
 
     <Button
         android:id="@+id/continueButton"
@@ -70,9 +73,6 @@
         android:textSize="20sp"
         android:text="Continue"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="46dp"
-        android:layout_marginEnd="46dp"
-        android:layout_marginBottom="52dp" />
+        android:layout_alignRight="@+id/receivingLanguageDropDown"
+        android:layout_alignEnd="@+id/receivingLanguageDropDown" />
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.android.interpreter.interpreter;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,10 +45,13 @@ public class ConfigurationActivity extends ActionBarActivity {
 
         ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sendLanguageArray);
         sendingLanguageDropDown.setAdapter(sendingAdapter);
+        //TODO: show already chosen language in dropdown. Should be the same for receivingLanguageDropDown
+        //sendingLanguageDropDown.setSelection(position, false);
         sendingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedSendingLang = sendLanguageArray[position];
+                Log.v("item", (String) parent.getItemAtPosition(position));
                 //TODO: set selectedSendingLang in DB
             }
 
