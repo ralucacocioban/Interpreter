@@ -7,6 +7,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_configuration">ConfigurationActivity</string>
     <string name="title_activity_message_details">MessageDetailsActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
     <string name="conversations_activity">ConversationsActivity</string>
     <string name="title_activity_configuration_message">ConfigurationMessageActivity</string>
 
