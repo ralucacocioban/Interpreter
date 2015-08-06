@@ -2,7 +2,6 @@ package com.android.interpreter.pushnotifications;
 
 import android.content.Context;
 
-import com.android.interpreter.interpreter.R;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
