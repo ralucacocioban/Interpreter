@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 public class Conversation {
 
-    private Users to;
-    private Users from;
+//    private Users to;
+//    private Users from;
     private String receivingLanguage;
     private String sendingLanguage;
     private ArrayList<Message> messages;
@@ -19,21 +19,21 @@ public class Conversation {
 
     }
 
-    public Users getTo() {
-        return this.to;
-    }
-
-    public void setTo(Users to) {
-        this.to = to;
-    }
-
-    public Users getFrom() {
-        return this.from;
-    }
-
-    public void setFrom(Users from) {
-        this.from = from;
-    }
+//    public Users getTo() {
+//        return this.to;
+//    }
+//
+//    public void setTo(Users to) {
+//        this.to = to;
+//    }
+//
+//    public Users getFrom() {
+//        return this.from;
+//    }
+//
+//    public void setFrom(Users from) {
+//        this.from = from;
+//    }
 
     public String getReceivingLanguage() {
         return this.receivingLanguage;

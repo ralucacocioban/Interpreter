@@ -17,8 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
@@ -30,5 +28,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.firebase:firebase-client-android:2.3.0+'
     compile 'com.squareup.picasso:picasso:2.3.3'
+    compile "com.google.android.gms:play-services:7.5.+"
 }
 

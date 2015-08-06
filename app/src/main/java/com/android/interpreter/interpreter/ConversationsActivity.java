@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.interpreter.util.Conversation;
-import com.android.interpreter.util.Users;
+
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -35,67 +35,67 @@ public class ConversationsActivity extends AppCompatActivity {
     private String usersPath = new String("https://flickering-heat-70.firebaseio.com/interpreter/users");
 
     private void handleUsers(){
-        Users user = new Users("ralu@gmail.com", "ttt", "English", "Romanian", "skks");
-        Firebase userRef = new Firebase(usersPath);
+//        Users user = new Users("ralu@gmail.com", "ttt", "English", "Romanian", "skks");
+//        Firebase userRef = new Firebase(usersPath);
+//
+//        userRef.push().setValue(user);
 
-        userRef.push().setValue(user);
-
-        userRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                System.out.println(snapshot.getKey());
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println(snapshot.getKey());
-
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-
-                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
-                System.out.println("on data changeee");
-
-
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
-
-                    System.out.println(postSnapshot.getValue());
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
+//        userRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+//                System.out.println(snapshot.getKey());
+//                System.out.println("dfjkhdfjkdf in child added");
+//                System.out.println("dfjkhdfjkdf in child added");
+//                System.out.println("dfjkhdfjkdf in child added");
+//                System.out.println("dfjkhdfjkdf in child added");
+//                System.out.println(snapshot.getKey());
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        });
+//
+//
+//        userRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                System.out.println(snapshot.getValue());
+//
+//                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
+//                System.out.println("on data changeee");
+//
+//
+//                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//
+//
+//                    System.out.println(postSnapshot.getValue());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//                System.out.println("The read failed: " + firebaseError.getMessage());
+//            }
+//        });
     }
 
     private void handleConversations(){
@@ -188,7 +188,7 @@ public class ConversationsActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Conversation conversation = postSnapshot.getValue(Conversation.class);
                     conversations.add(conversation);
-                    System.out.println(conversation.getTo() + "     this is the receiverrr  ");
+//                    System.out.println(conversation.getTo() + "     this is the receiverrr  ");
                 }
 
                 mAdapter.notifyDataSetChanged();
@@ -270,7 +270,7 @@ public class ConversationsActivity extends AppCompatActivity {
 
             if (current != null) {
 
-                holder.receiver.setText(current.getTo().getNickname());
+//                holder.receiver.setText(current.getTo().getNickname());
                 holder.last_message.setText(current.getMessages().get(current.getMessages().size() - 1).getMessage());
                 holder.date.setText(current.getMessages().get(current.getMessages().size() - 1).getDate().toString());
 //                Picasso.with(getBaseContext())
