@@ -1,6 +1,7 @@
 package com.android.interpreter.pushnotifications;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
@@ -57,6 +58,12 @@ public class PushNotifications {
             e.printStackTrace();
         }
     }
+
+//    public void onTokenRefresh(Context context) {
+//        // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
+//        Intent intent = new Intent(this, RegistrationIntentService.class);
+//        startService(intent);
+//    }
 //    final String regId = GSMRegistrar.getRegistrationId(this);
 //    if (regId.equals("")) {
 //        GSMRegistrar.registrer(this, SENDER_ID);
