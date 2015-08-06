@@ -18,40 +18,34 @@ import com.android.interpreter.Helper;
 import com.android.interpreter.interpreter.R;
 import com.android.interpreter.util.User;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-
-public class ConfigurationActivity extends ActionBarActivity {
-    TextView nickName;
-    EditText nickNameEdit;
+public class ConfigurationMessageActivity extends ActionBarActivity {
+    TextView text;
     TextView sendingLanguage;
     Spinner sendingLanguageDropDown;
     TextView receivingLanguage;
     Spinner receivingLanguageDropDown;
-    Button continueButton;
+    Button saveButton;
     Helper helper = new Helper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configuration);
+        setContentView(R.layout.activity_configuration_message);
 
-        nickName = (TextView)findViewById(R.id.nickName);
-        nickNameEdit = (EditText)findViewById(R.id.nickNameEdit);
+        text = (TextView)findViewById(R.id.text);
         sendingLanguage = (TextView)findViewById(R.id.sendingLanguage);
         sendingLanguageDropDown = (Spinner)findViewById(R.id.sendingLanguageDropDown);
         receivingLanguage = (TextView)findViewById(R.id.receivingLanguage);
         receivingLanguageDropDown = (Spinner)findViewById(R.id.receivingLanguageDropDown);
-        continueButton = (Button)findViewById(R.id.continueButton);
+        saveButton = (Button)findViewById(R.id.saveButton);
 
-        //TODO: get currentUser properly
-        User currentUser = new User();
-
+        //TODO: get currentUser conversation
+//        User currentUser = new User();
+//
         ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.sendLanguageArray);
         sendingLanguageDropDown.setAdapter(sendingAdapter);
-        int selectedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
-        sendingLanguageDropDown.setSelection(selectedLanguagePosition, false);
+//        int selectedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
+//        sendingLanguageDropDown.setSelection(selectedLanguagePosition, false);
         sendingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -67,14 +61,13 @@ public class ConfigurationActivity extends ActionBarActivity {
 
         ArrayAdapter<String> receivingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.receiveLanguageArray);
         receivingLanguageDropDown.setAdapter(receivingAdapter);
-        int receivedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
-        receivingLanguageDropDown.setSelection(receivedLanguagePosition, false);
+//        int receivedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
+//        receivingLanguageDropDown.setSelection(receivedLanguagePosition, false);
         receivingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String receivedReceivedLang = (String) parent.getItemAtPosition(position);
+                String selectedReceivedLang = (String) parent.getItemAtPosition(position);
                 //TODO: set selectedReceivedLang in DB
-
             }
 
             @Override
@@ -83,7 +76,7 @@ public class ConfigurationActivity extends ActionBarActivity {
             }
         });
 
-        continueButton.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: call intent with conversations
@@ -94,7 +87,7 @@ public class ConfigurationActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_configuration, menu);
+        getMenuInflater().inflate(R.menu.menu_configuration_message, menu);
         return true;
     }
 

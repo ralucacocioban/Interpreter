@@ -22,7 +22,13 @@
         </activity>
         <activity
             android:name=".ConversationsActivity"
-            android:label="@string/activity_configuration" >
+            android:label="@string/conversations_activity" >
+        </activity>
+
+        <activity
+            android:name=".ConfigurationMessageActivity"
+            android:label="@string/title_activity_configuration_message" >
+
         </activity>
     </application>
 
