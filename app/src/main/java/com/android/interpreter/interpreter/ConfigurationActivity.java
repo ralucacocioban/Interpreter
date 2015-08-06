@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
 import com.android.interpreter.interpreter.R;
-import com.android.interpreter.util.User;
 
 import org.w3c.dom.Text;
 
@@ -45,13 +44,12 @@ public class ConfigurationActivity extends ActionBarActivity {
         receivingLanguageDropDown = (Spinner)findViewById(R.id.receivingLanguageDropDown);
         continueButton = (Button)findViewById(R.id.continueButton);
 
-        //TODO: get currentUser properly
-        User currentUser = new User();
+        //TODO: get currentUserId properly
 
         ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.sendLanguageArray);
         sendingLanguageDropDown.setAdapter(sendingAdapter);
-        int selectedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
-        sendingLanguageDropDown.setSelection(selectedLanguagePosition, false);
+//        int selectedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
+//        sendingLanguageDropDown.setSelection(selectedLanguagePosition, false);
         sendingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -67,8 +65,8 @@ public class ConfigurationActivity extends ActionBarActivity {
 
         ArrayAdapter<String> receivingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.receiveLanguageArray);
         receivingLanguageDropDown.setAdapter(receivingAdapter);
-        int receivedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
-        receivingLanguageDropDown.setSelection(receivedLanguagePosition, false);
+//        int receivedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
+//        receivingLanguageDropDown.setSelection(receivedLanguagePosition, false);
         receivingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
