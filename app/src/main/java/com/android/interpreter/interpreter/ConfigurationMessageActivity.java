@@ -1,22 +1,17 @@
 package com.android.interpreter.interpreter;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
-import com.android.interpreter.interpreter.R;
-import com.android.interpreter.util.User;
 
 public class ConfigurationMessageActivity extends ActionBarActivity {
     TextView text;

@@ -13,7 +13,6 @@ public class Message {
     private String originalLanguage;
 
     public Message(){
-
     }
 
     public String getMessage() {

@@ -38,7 +38,6 @@ public class LoginActivity extends ActionBarActivity {
         password2 = (TextView)findViewById(R.id.password2_input);
         registerButton = (Button)findViewById(R.id.register_btn);
         newUserButton = (Button)findViewById(R.id.new_user_btn);
-
         Firebase.setAndroidContext(this);
         rootRef = new Firebase(Config.mainFireBaseRef);
     }
@@ -48,7 +47,6 @@ public class LoginActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
-
     }
 
     @Override
