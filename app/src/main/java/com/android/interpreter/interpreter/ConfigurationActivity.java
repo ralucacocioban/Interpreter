@@ -90,9 +90,6 @@ public class ConfigurationActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                /// TODO: 06/08/2015 change here to validate that something was selected form ddropdown
-                // if it wasnt then prompt a message
-
                 String nickName = nickNameEdit.getText().toString();
 
                 if(nickName != null){
@@ -102,7 +99,6 @@ public class ConfigurationActivity extends ActionBarActivity {
 //                    Intent convIntent = new Intent(this, ConversationsActivity.class);
 //                    startActivity(convIntent);
                 }
-
             }
         });
     }
