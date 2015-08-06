@@ -4,8 +4,8 @@
 
     <permission android:name="com.android.interpreter.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="ccom.android.interpreter.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -30,6 +30,7 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -41,28 +42,26 @@
             android:name=".ConversationsActivity"
             android:label="@string/conversations_activity" >
         </activity>
-
         <activity
             android:name=".ConfigurationActivity"
             android:label="@string/title_activity_configuration" >
         </activity>
-
         <activity
             android:name=".MessageDetailsActivity"
             android:label="@string/title_activity_message_details" >
         </activity>
-
         <activity
             android:name=".ConfigurationMessageActivity"
             android:label="@string/title_activity_configuration_message" >
         </activity>
-
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat" >
         </activity>
-
-
+        <activity
+            android:name=".SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
     </application>
 
 </manifest>

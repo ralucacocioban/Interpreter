@@ -1,5 +1,7 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -11,8 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
+import com.android.interpreter.util.UserDetails;
+import com.firebase.client.Firebase;
 
 public class ConfigurationActivity extends ActionBarActivity {
     TextView nickName;
@@ -23,31 +28,39 @@ public class ConfigurationActivity extends ActionBarActivity {
     Spinner receivingLanguageDropDown;
     Button continueButton;
     Helper helper = new Helper();
+    String sendingL;
+    String receivingL;
+    String nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences settings = getSharedPreferences("CURRENT_USER", 0);
+        String currentUser = settings.getString("CURRENT_USER", null);
+
+        System.out.println("current user in Configuration Activity  " + currentUser);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        nickName = (TextView)findViewById(R.id.nickName);
-        nickNameEdit = (EditText)findViewById(R.id.nickNameEdit);
-        sendingLanguage = (TextView)findViewById(R.id.sendingLanguage);
-        sendingLanguageDropDown = (Spinner)findViewById(R.id.sendingLanguageDropDown);
-        receivingLanguage = (TextView)findViewById(R.id.receivingLanguage);
-        receivingLanguageDropDown = (Spinner)findViewById(R.id.receivingLanguageDropDown);
-        continueButton = (Button)findViewById(R.id.continueButton);
+        nickName = (TextView) findViewById(R.id.nickName);
+        nickNameEdit = (EditText) findViewById(R.id.nickNameEdit);
 
-        //TODO: get currentUserId properly
+        sendingLanguage = (TextView) findViewById(R.id.sendingLanguage);
+        sendingLanguageDropDown = (Spinner) findViewById(R.id.sendingLanguageDropDown);
+        receivingLanguage = (TextView) findViewById(R.id.receivingLanguage);
+        receivingLanguageDropDown = (Spinner) findViewById(R.id.receivingLanguageDropDown);
+        continueButton = (Button) findViewById(R.id.continueButton);
 
         ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.sendLanguageArray);
         sendingLanguageDropDown.setAdapter(sendingAdapter);
-//        int selectedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
-//        sendingLanguageDropDown.setSelection(selectedLanguagePosition, false);
+        //int selectedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
+        //sendingLanguageDropDown.setSelection(selectedLanguagePosition, false);
         sendingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedSendingLang = (String) parent.getItemAtPosition(position);
-                //TODO: set selectedSendingLang in DB
+                sendingL = selectedSendingLang;
             }
 
             @Override
@@ -64,8 +77,7 @@ public class ConfigurationActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String receivedReceivedLang = (String) parent.getItemAtPosition(position);
-                //TODO: set selectedReceivedLang in DB
-
+                receivingL = receivedReceivedLang;
             }
 
             @Override
@@ -77,7 +89,20 @@ public class ConfigurationActivity extends ActionBarActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: call intent with conversations
+
+                /// TODO: 06/08/2015 change here to validate that something was selected form ddropdown
+                // if it wasnt then prompt a message
+
+                String nickName = nickNameEdit.getText().toString();
+
+                if(nickName != null){
+//                    UserDetails details = new UserDetails(sendingL, receivingL, "", nickName);
+//
+//                    Firebase firebase = new Firebase(DBConnector.getPathToUser())
+//                    Intent convIntent = new Intent(this, ConversationsActivity.class);
+//                    startActivity(convIntent);
+                }
+
             }
         });
     }

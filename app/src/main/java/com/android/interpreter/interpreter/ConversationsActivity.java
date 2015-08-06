@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.android.interpreter.Config;
 import com.android.interpreter.util.Conversation;
 import com.firebase.client.ChildEventListener;
@@ -235,9 +234,8 @@ public class ConversationsActivity extends AppCompatActivity {
 
             if (current != null) {
 
-//                holder.receiver.setText(current.getTo().getNickname());
-                holder.last_message.setText(current.getMessages().get(current.getMessages().size() - 1).getMessage());
-                holder.date.setText(current.getMessages().get(current.getMessages().size() - 1).getDate().toString());
+//                holder.last_message.setText(current.getMessages().get(current.getMessages().size() - 1).getMessage());
+//                holder.date.setText(current.getMessages().get(current.getMessages().size() - 1).getDate().toString());
 //                Picasso.with(getBaseContext())
 //                        .load(current.getPicUrl())
 //                        .into(holder.img);
