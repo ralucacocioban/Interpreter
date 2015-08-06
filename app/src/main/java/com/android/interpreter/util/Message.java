@@ -12,9 +12,6 @@ public class Message {
     private Date date;
     private String originalLanguage;
 
-    public Message(){
-    }
-
     public String getMessage() {
         return message;
     }
@@ -23,6 +20,7 @@ public class Message {
         this.message = message;
     }
 
+
     public User getSender() {
         return sender;
     }
@@ -30,6 +28,7 @@ public class Message {
     public void setSender(User sender) {
         this.sender = sender;
     }
+
 
     public Date getDate() {
         return date;

@@ -36,9 +36,21 @@
         </activity>
 
         <activity
+            android:name=".MessageDetailsActivity"
+            android:label="@string/title_activity_message_details" >
+        </activity>
+
+        <activity
             android:name=".ConfigurationMessageActivity"
             android:label="@string/title_activity_configuration_message" >
         </activity>
+
+        <activity
+            android:name=".ChatActivity"
+            android:label="@string/title_activity_chat" >
+        </activity>
+
+
     </application>
 
 </manifest>
