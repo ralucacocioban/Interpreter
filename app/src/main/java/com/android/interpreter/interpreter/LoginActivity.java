@@ -94,6 +94,8 @@ public class LoginActivity extends ActionBarActivity {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("CURRENT_USER", result.get("uid").toString());
 
+                    System.out.println("commited the message");
+
                     // Commit the edits!
                     editor.commit();
                     launchConfigPage();
@@ -112,6 +114,11 @@ public class LoginActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    private void launchConversations() {
+        Intent intent = new Intent(this, ConversationsActivity.class);
+        startActivity(intent);
+    }
+
 
     public void login(View view) {
 
@@ -125,7 +132,7 @@ public class LoginActivity extends ActionBarActivity {
                         System.out.println("User ID: " + authData.getUid() + ", Providerdfjhbdfdfjhbdfbjf: " + authData.getProvider());
                         Toast.makeText(getBaseContext(), "Login success!", Toast.LENGTH_LONG).show();
 
-                        launchConfigPage();
+                        launchConversations();
                     }
 
                     @Override
