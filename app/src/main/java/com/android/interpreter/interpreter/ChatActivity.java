@@ -61,7 +61,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 // TODO - optimize this if needed
                 Message current;
-                ArrayList<Message> newmessages = new ArrayList<Message>((int) snapshot.getChildrenCount());
+                ArrayList<Message> newmessages = new ArrayList<>((int) snapshot.getChildrenCount());
                 for(DataSnapshot messageSnapshot : snapshot.getChildren()) {
                     current = messageSnapshot.getValue(Message.class);
                     newmessages.add(current);

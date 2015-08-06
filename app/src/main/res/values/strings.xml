@@ -10,6 +10,7 @@
     <string name="title_activity_chat">ChatActivity</string>
     <string name="conversations_activity">ConversationsActivity</string>
     <string name="title_activity_configuration_message">ConfigurationMessageActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 >>>>>>> c2e172a5910ae7aab5ec7620971620cf64cab71b
 </resources>
