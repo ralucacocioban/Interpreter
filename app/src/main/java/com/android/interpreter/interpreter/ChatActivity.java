@@ -155,11 +155,11 @@ public class ChatActivity extends AppCompatActivity {
                 LayoutInflater inflater = LayoutInflater.from(ChatActivity.this);
                 // When the current user is the sender of this message, the message is placed right.
                 if (true) { // TODO - check whether we send or received this particular message.
-                    view = inflater.inflate(R.layout.message_right, null);
+                    view = inflater.inflate(R.layout.message_outgoing, null);
                 }
                 // Otherwise, when the current user is the receiver, the message is placed left
                 else {
-                    view = inflater.inflate(R.layout.message_left, null);
+                    view = inflater.inflate(R.layout.message_incoming, null);
                 }
 
                 holder = new ViewHolder();
@@ -171,6 +171,14 @@ public class ChatActivity extends AppCompatActivity {
                 view = convertView;
                 holder = (ViewHolder) view.getTag();
             }
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    //TODO - create transition to message details
+                }
+            });
 
             // Assign values to the view
             Message current = messages.get(position);
