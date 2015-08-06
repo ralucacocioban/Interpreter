@@ -13,9 +13,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.interpreter.Config;
 import com.android.interpreter.util.Conversation;
-import com.android.interpreter.util.Users;
-import com.firebase.client.ChildEventListener;
+import com.android.interpreter.util.User;
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -32,62 +33,31 @@ public class ConversationsActivity extends AppCompatActivity {
     private ListView mList;
     private MyAdapter mAdapter;
     private List<Conversation> conversations = new ArrayList<>();
-    private String usersPath = new String("https://flickering-heat-70.firebaseio.com/interpreter/users");
 
-    private void handleUsers(){
-        Users user = new Users("ralu@gmail.com", "ttt", "English", "Romanian", "skks");
-        Firebase userRef = new Firebase(usersPath);
+    private void pushUser() {
 
-        userRef.push().setValue(user);
+        Firebase userRef = new Firebase(Config.usersFirebasePath);
+        Firebase ref = new Firebase(Config.mainFireBaseRef);
 
-        userRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                System.out.println(snapshot.getKey());
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println(snapshot.getKey());
-
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
+        AuthData authData = ref.getAuth();
+        if (authData != null) {
+            System.out.println(authData);
+            System.out.println(authData.getAuth().get("uid"));
+            System.out.println(authData.getProviderData().get("email"));
+            User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString());
+            userRef.push().setValue(currentUser);
+        }
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
 
-                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
+                System.out.println("There are " + snapshot.getChildrenCount() + " users logged in");
                 System.out.println("on data changeee");
 
-
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
-
-                    System.out.println(postSnapshot.getValue());
+                    System.out.println(postSnapshot);
                 }
             }
 
@@ -98,7 +68,7 @@ public class ConversationsActivity extends AppCompatActivity {
         });
     }
 
-    private void handleConversations(){
+    private void handleConversations() {
 
     }
 
@@ -114,91 +84,82 @@ public class ConversationsActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         Button btn = (Button) findViewById(R.id.addConversation);
 
-        //handleUsers();
         handleConversations();
+
+        pushUser();
 
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("heyyyy");
+                System.out.println("heyyyy");
 
-                Firebase ref = new Firebase("https://flickering-heat-70.firebaseio.com/interpreter/users/uid0/conversations");
-
-//
-//
-//                ref.push().setValue(msg);
+                /// TODO: 06/08/2015
+                // launch activity for searching other users
             }
         });
 
-        Firebase convRef = new Firebase("https://flickering-heat-70.firebaseio.com/interpreter/users/uid0/conversations/");
-
-
-        /// TODO: 06/08/2015
-        // add conversation when this ChildEventListener is called
-        // -> so add to conevrsations array list a new conversation from the db
-        //
-
-
-        convRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                System.out.println(snapshot.getKey());
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-                System.out.println("dfjkhdfjkdf in child added");
-
-//                Conversation conversation = snapshot.getValue(Conversation.class);
-//                conversations.add(conversation);
+//        convRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+//                System.out.println(snapshot.getKey());
+//                System.out.println("dfjkhdfjkdf in child added");
+//                System.out.println("dfjkhdfjkdf in child added");
+//                System.out.println("dfjkhdfjkdf in child added");
+//                System.out.println("dfjkhdfjkdf in child added");
+//
+////                Conversation conversation = snapshot.getValue(Conversation.class);
+////                conversations.add(conversation);
+////                mAdapter.notifyDataSetChanged();
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//
+//            }
+//        });
+//
+//
+//        convRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                System.out.println(snapshot.getValue());
+//
+//                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
+//                System.out.println("on data changeee");
+//
+//
+//                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                    Conversation conversation = postSnapshot.getValue(Conversation.class);
+//                    conversations.add(conversation);
+//                    System.out.println(conversation.getTo() + "     this is the receiverrr  ");
+//                }
+//
 //                mAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-
-        convRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-
-                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
-                System.out.println("on data changeee");
-
-
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Conversation conversation = postSnapshot.getValue(Conversation.class);
-                    conversations.add(conversation);
-                    System.out.println(conversation.getTo() + "     this is the receiverrr  ");
-                }
-
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//                System.out.println("The read failed: " + firebaseError.getMessage());
+//            }
+//        });
     }
 
     @Override
