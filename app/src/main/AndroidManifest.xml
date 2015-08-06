@@ -22,6 +22,11 @@
             android:name=".ConfigurationActivity"
             android:label="@string/title_activity_configuration" >
         </activity>
+
+        <activity
+            android:name=".ConfigurationMessageActivity"
+            android:label="@string/title_activity_configuration_message" >
+        </activity>
     </application>
 
 </manifest>
