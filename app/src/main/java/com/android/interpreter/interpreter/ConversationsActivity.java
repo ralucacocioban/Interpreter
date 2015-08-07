@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.android.interpreter.Config;
 import com.android.interpreter.util.Conversation;
-import com.firebase.client.ChildEventListener;
 
 import com.android.interpreter.util.User;
 import com.firebase.client.AuthData;

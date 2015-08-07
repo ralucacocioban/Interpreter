@@ -1,6 +1,7 @@
 package com.android.interpreter.interpreter;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -9,11 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.android.interpreter.pushnotifications.PushNotifications;
 import com.android.interpreter.util.Message;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -32,8 +35,10 @@ public class ChatActivity extends AppCompatActivity {
 
     // Parts needed for the UI, where all the messages are stored in 'messages'.
     private ListView messageList;
+    private Button sendbutton;
     private MessageListAdapter messageListAdapter;
     private ArrayList<Message> messages = new ArrayList<>();
+    PushNotifications pushNotifications = new PushNotifications();
 
     // This will be the format we will use at the bottom of the message, displaying the date.
     // TODO - Check whether we want this format
@@ -51,32 +56,48 @@ public class ChatActivity extends AppCompatActivity {
         messageListAdapter = new MessageListAdapter();
         messageList.setAdapter(messageListAdapter);
 
-        // Setting up the correct root reference, giving a Conversation.
-        Firebase.setAndroidContext(this);
-        conversationref = new Firebase("");     // TODO - Place the correct URL here.
-
-        conversationref.addValueEventListener(new ValueEventListener() {
+        sendbutton = (Button)findViewById(R.id.sendbutton);
+        sendbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                // TODO - optimize this if needed
-                Message current;
-                ArrayList<Message> newmessages = new ArrayList<>((int) snapshot.getChildrenCount());
-                for(DataSnapshot messageSnapshot : snapshot.getChildren()) {
-                    current = messageSnapshot.getValue(Message.class);
-                    newmessages.add(current);
-                }
-
-                messages = newmessages;
-
-                messageListAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
+            public void onClick(View v) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        String deviceId = pushNotifications.getDeviceId(ChatActivity.this);
+                        System.out.println("#####deviceId: " + deviceId);
+                        pushNotifications.sendMessage(deviceId);
+                        return null;
+                    }
+                }.execute();
             }
         });
+
+        // Setting up the correct root reference, giving a Conversation.
+//        Firebase.setAndroidContext(this);
+//        conversationref = new Firebase("");     // TODO - Place the correct URL here.
+//
+//        conversationref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//
+//                // TODO - optimize this if needed
+//                Message current;
+//                ArrayList<Message> newmessages = new ArrayList<>((int) snapshot.getChildrenCount());
+//                for(DataSnapshot messageSnapshot : snapshot.getChildren()) {
+//                    current = messageSnapshot.getValue(Message.class);
+//                    newmessages.add(current);
+//                }
+//
+//                messages = newmessages;
+//
+//                messageListAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//                System.out.println("The read failed: " + firebaseError.getMessage());
+//            }
+//        });
 
     }
 

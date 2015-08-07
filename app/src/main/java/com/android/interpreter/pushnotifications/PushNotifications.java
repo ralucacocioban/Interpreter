@@ -1,15 +1,14 @@
 package com.android.interpreter.pushnotifications;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
-
-import java.util.ArrayList;
 
 /**
  * Created by demouser on 8/6/15.
@@ -19,6 +18,7 @@ public class PushNotifications {
     public static final String CLIENT_API_KEY = "545042974867";
 
     public void sendMessage(String deviceId) {
+        //TODO: commit it
         deviceId = "APA91bGiRaramjyohc2lKjAgFGpzBwtEmI8tJC30O89C2b3IjP1CuMeU1h9LMjKhmWuZwcXZjy1eqC4cE0tWBNt61Kx_SuMF6awzIt8WNq_4AfwflaVPHQ0wYHG_UX3snjp_U-5kJkmysdRlN6T8xChB1n3DtIq98w";
         try {
             Sender sender = new Sender(SERVER_API_KEY);
@@ -39,7 +39,7 @@ public class PushNotifications {
                     .addData("message", "Your message send")
                     .build();
 
-
+            System.out.println("####message: " + message);
                    /**/
             // Use this code to send to a single device
             Result result = sender.send(message, deviceId, 1);
@@ -49,16 +49,18 @@ public class PushNotifications {
         }
     }
 
-    public void getAndSaveDeviceId(Context context) {
+    public String getDeviceId(Context context) {
         try {
             InstanceID instanceID = InstanceID.getInstance(context);
+
+            System.out.println("####instanceID: " + instanceID);
             String token = instanceID.getToken(CLIENT_API_KEY, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-
+            return token;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-    }
 
+    }
 //    public void onTokenRefresh(Context context) {
 //        // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
 //        Intent intent = new Intent(this, RegistrationIntentService.class);
