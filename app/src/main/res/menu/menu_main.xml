@@ -1,4 +1,4 @@
-<!-- We are going to use this menu everywhere! -->
+<!-- We are going to use this menu everywhere, exept Settings and Login -->
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,6 +7,7 @@
 
     <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="always"
