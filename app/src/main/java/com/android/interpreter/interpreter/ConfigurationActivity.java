@@ -14,7 +14,11 @@ import android.widget.TextView;
 
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
+import com.android.interpreter.util.User;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +35,7 @@ public class ConfigurationActivity extends AppCompatActivity {
     String sendingL;
     String receivingL;
     String nickname;
+    User curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
         final String currentUser = settings.getString("CURRENT_USER", null);
 
-        System.out.println("current user in Configuration Activity  " + currentUser);
+        System.out.println("#############current user in Configuration Activity  " + currentUser);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
@@ -99,23 +104,14 @@ public class ConfigurationActivity extends AppCompatActivity {
 
                 if (currentUser != null) {
                     Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
-                    //Firebase userRef = firebase.child(currentUser);
 
                     if (nickName != null) {
-                        Map<String, Object> nickname = new HashMap<String, Object>();
-                        nickname.put("nickname", nickName);
-                        System.out.println("####nickNameEdit.getText().toString() " + nickNameEdit.getText().toString());
-                        System.out.println("####userRef " + userRef);
-                        userRef.setValue("nickName", nickNameEdit.getText().toString());
-
+                        userRef.child("nickname").setValue(nickName);
+                        userRef.child("sendingLanguage").setValue(sendingL);
+                        userRef.child("receivingLanguage").setValue(receivingL);
                     } else {
-                        Map<String, Object> sendingLanguage = new HashMap<String, Object>();
-                        Map<String, Object> receivingLanguage = new HashMap<String, Object>();
-
-                        sendingLanguage.put("sendingLanguage", sendingL);
-                        sendingLanguage.put("receivingLanguage", receivingL);
-                        userRef.updateChildren(sendingLanguage);
-                        userRef.updateChildren(receivingLanguage);
+                        userRef.child("sendingLanguage").setValue(sendingL);
+                        userRef.child("receivingLanguage").setValue(receivingL);
                     }
                 }
 

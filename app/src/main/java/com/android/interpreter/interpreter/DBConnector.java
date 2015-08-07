@@ -12,27 +12,24 @@ public class DBConnector {
     }
 
     public static String getPathToUser(String userId) {
-//        String path = String.format("%s/%s/", Config.usersFirebasePath, userId);
-        return Config.usersFirebasePath+userId;
+        return Config.usersFirebasePath + userId;
     }
 
     public static String getPathToConversationsOf(String userId) {
-        String path = String.format("%s/conversations/%s/all/", Config.mainFireBaseRef, userId);
+
+        String path = Config.convsPath + userId + "/all/";
+        //String path = String.format("%s/conversations/%s/all/", Config.mainFireBaseRef, userId);
         return path;
     }
 
     public static String getPathToMessages(String senderId, String receiverId) {
-        String path = String.format("%s/conversations/%s/%s/messages", Config.mainFireBaseRef, senderId, receiverId);
+        String path = Config.convsPath + senderId + "/" + receiverId + "/messages";
+        //String path = String.format("%s/conversations/%s/%s/messages", Config.mainFireBaseRef, senderId, receiverId);
         return path;
     }
 
     public static String getPathToAllUsers() {
         String path = String.format("%s/users/all", Config.mainFireBaseRef);
-        return path;
-    }
-
-    public static String getAllConversations(String userId) {
-        String path = String.format("%s/conversations/%s/all", Config.mainFireBaseRef, userId);
         return path;
     }
 

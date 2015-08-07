@@ -1,6 +1,8 @@
 package com.android.interpreter.interpreter;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.android.interpreter.Config;
 import com.android.interpreter.util.Conversation;
 import com.android.interpreter.util.User;
@@ -33,8 +36,35 @@ public class ConversationsActivity extends AbstractActivity {
     private ListView mList;
     private MyAdapter mAdapter;
     private List<Conversation> conversations = new ArrayList<>();
+    private User current_user;
 
-    private void handleConversations() {}
+    private void handleConversations(String userId) {
+
+        Firebase convRef = new Firebase(DBConnector.getPathToConversationsOf(userId));
+
+        convRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+
+                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
+                System.out.println("on data changeee");
+
+//                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                    Conversation conversation = postSnapshot.getValue(Conversation.class);
+//                    conversations.add(conversation);
+//                    System.out.println(conversation.getReceivingLanguage()+ "     this is the receiving language  ");
+//                }
+//                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +77,29 @@ public class ConversationsActivity extends AbstractActivity {
         Firebase.setAndroidContext(this);
         Button btn = (Button) findViewById(R.id.addConversation);
 
-        handleConversations();
+        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+        final String currentUser = settings.getString("CURRENT_USER", null);
+
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+
+                current_user = snapshot.getValue(User.class);
+// "email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
+//                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
+
+        handleConversations(currentUser);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,67 +108,6 @@ public class ConversationsActivity extends AbstractActivity {
                 startActivity(intent);
             }
         });
-
-//        convRef.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-//                System.out.println(snapshot.getKey());
-//                System.out.println("dfjkhdfjkdf in child added");
-//                System.out.println("dfjkhdfjkdf in child added");
-//                System.out.println("dfjkhdfjkdf in child added");
-//                System.out.println("dfjkhdfjkdf in child added");
-//
-////                Conversation conversation = snapshot.getValue(Conversation.class);
-////                conversations.add(conversation);
-////                mAdapter.notifyDataSetChanged();
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//
-//            }
-//        });
-//
-//
-//        convRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot snapshot) {
-//                System.out.println(snapshot.getValue());
-//
-//                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
-//                System.out.println("on data changeee");
-//
-//
-//                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-//                    Conversation conversation = postSnapshot.getValue(Conversation.class);
-//                    conversations.add(conversation);
-//                    System.out.println(conversation.getTo() + "     this is the receiverrr  ");
-//                }
-//
-//                mAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//                System.out.println("The read failed: " + firebaseError.getMessage());
-//            }
-//        });
     }
 
 
@@ -171,6 +162,11 @@ public class ConversationsActivity extends AbstractActivity {
 //                Picasso.with(getBaseContext())
 //                        .load(current.getPicUrl())
 //                        .into(holder.img);
+
+                holder.last_message.setText("some message here");
+                holder.date.setText("02-10-2015");
+                holder.profile_img.setImageResource(R.drawable.no_user);
+
             }
 
             return view;
