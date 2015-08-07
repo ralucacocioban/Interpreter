@@ -28,7 +28,7 @@ import java.util.Date;
 /**
  * This Activity represents the screen with one Chat.
  */
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AbstractActivity {
 
     // Parts needed for the UI, where all the messages are stored in 'messages'.
     private ListView messageList;
@@ -46,6 +46,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        getActionBar().setDisplayUseLogoEnabled(true);
 
         messageList = (ListView) findViewById(R.id.messages);
         messageListAdapter = new MessageListAdapter();
@@ -78,28 +79,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 

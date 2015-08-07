@@ -47,17 +47,18 @@
         android:layout_centerHorizontal="true"
         android:paddingBottom="20dp"
         android:hint="Enter email"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"
+        ><requestFocus/></EditText>
 
     <Button
         android:id="@+id/new_user_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register new user"
-        android:layout_centerVertical="true"
+        android:text="New user? Register"
         android:layout_alignParentRight="true"
         android:onClick="newUser"
         />
+
 
     <Button
         android:id="@+id/register_btn"
@@ -66,6 +67,17 @@
         android:text="Register"
         android:layout_centerInParent="true"
         android:onClick="register"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:id="@+id/cancel_register_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_centerInParent="true"
+        android:onClick="cancelRegister"
+        android:layout_below="@id/register_btn"
         android:visibility="gone"
         />
 

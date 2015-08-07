@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by ralucamelon on 06/08/2015.
  */
-public class ConversationsActivity extends AppCompatActivity {
+public class ConversationsActivity extends AbstractActivity {
 
     private ListView mList;
     private MyAdapter mAdapter;
@@ -155,28 +155,6 @@ public class ConversationsActivity extends AppCompatActivity {
 //                System.out.println("The read failed: " + firebaseError.getMessage());
 //            }
 //        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 
