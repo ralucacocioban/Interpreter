@@ -11,6 +11,7 @@ public class Message {
     private String senderID;
     private Date date;
     private String originalLanguage;
+    private String translatedMessage;
 
     public String getMessage() {
         return message;
@@ -43,5 +44,13 @@ public class Message {
 
     public void setOriginalLanguage(String originalLanguage) {
         this.originalLanguage = originalLanguage;
+    }
+
+    public String getTranslatedMessage() {
+        return translatedMessage;
+    }
+
+    public void setTranslatedMessage(String translatedMessage) {
+        this.translatedMessage = translatedMessage;
     }
 }

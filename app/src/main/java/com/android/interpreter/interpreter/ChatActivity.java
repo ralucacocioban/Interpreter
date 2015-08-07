@@ -1,5 +1,6 @@
 package com.android.interpreter.interpreter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -12,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.interpreter.Config;
 import com.android.interpreter.util.GoogleTranslate;
 import com.android.interpreter.util.Message;
@@ -21,19 +21,33 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.net.ssl.HttpsURLConnection;
+
 /**
  * This Activity represents the screen with one Chat.
  */
-public class ChatActivity extends AbstractActivity {
+public class ChatActivity extends Activity {
 
     public final static String SENDER_ID = "sender";
     public final static String RECEIVER_ID = "receiver";
     public User current_user;
+
+    protected String translatedText;
 
 
     // Parts needed for the UI, where all the messages are stored in 'messages'.
@@ -101,6 +115,7 @@ public class ChatActivity extends AbstractActivity {
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
                     current = messageSnapshot.getValue(Message.class);
                     newmessages.add(current);
+                        new createTranslator().execute(current);
                 }
 
                 messages = newmessages;
@@ -112,10 +127,7 @@ public class ChatActivity extends AbstractActivity {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
-
         //create connection to Google Translate API
-
-
     }
 
     public void sendMessage(View view) {
@@ -136,7 +148,6 @@ public class ChatActivity extends AbstractActivity {
         // Delete the sent text from the EditText
         et.setText("");
     }
-
 
     /**
      * MessageListAdapter which handles the representation of the messages.
@@ -163,7 +174,7 @@ public class ChatActivity extends AbstractActivity {
             View view = null;
             ViewHolder holder;
 
-            if (convertView == null) {
+//            if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(ChatActivity.this);
 
                 // Here we get the currentUserID and then compare it with the sender of the message.
@@ -190,12 +201,8 @@ public class ChatActivity extends AbstractActivity {
                             showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, current_user.getReceivingLanguage());
 
                             String targetlanguage = current_user.getReceivingLanguage();
-
-                            new createTranslator().execute();
-                            String translatedText = translator.translate(messages.get(position).getMessage(), Config.getLangCode(originallanguage), Config.getLangCode(targetlanguage));
-
-
-                            showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, translatedText);
+                            new createTranslator().execute(messages.get(position));
+                            showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, messages.get(position).getTranslatedMessage());
                             startActivity(showDetails);
 
                             return true;
@@ -208,26 +215,30 @@ public class ChatActivity extends AbstractActivity {
                 holder.date = (TextView) view.findViewById(R.id.date);
                 view.setTag(holder);
 
-            } else {
-                view = convertView;
-                holder = (ViewHolder) view.getTag();
-            }
+//            } else {
+//                view = convertView;
+//                holder = (ViewHolder) view.getTag();
+//            }
 
             Message current = messages.get(position);
 
+            String messagesText = current.getMessage();
             if (senderID.equals(messages.get(position).getSenderID())) {           // NO TRANSLATION
-                holder.content.setText(current.getMessage());
+                holder.content.setText(messagesText);
+            } else {
+                String translatedMessage = current.getTranslatedMessage();
+                if (translatedMessage != null) {
+                    holder.content.setText(translatedMessage);
+                } else {
+                    holder.content.setText(messagesText);
+                }
             }
-            else {
-                String targetlanguage = current_user.getReceivingLanguage();
-                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
-                holder.content.setText(translator.translate(messages.get(position).getMessage(),
-                                Config.getLangCode(messages.get(position).getOriginalLanguage()), Config.getLangCode(targetlanguage))
-                );
-            }
-            
+
             holder.date.setText(df.format(current.getDate()));          // more info on df : top of the class
 
+            //System.out.println("TRANSLATED MESSAGE : " + messages.get(position).getTranslatedMessage());
+
+            //holder.content.setText(messages.get(position).getTranslatedMessage());
             return view;
         }
 
@@ -238,28 +249,81 @@ public class ChatActivity extends AbstractActivity {
         }
     }
 
-    private class createTranslator extends AsyncTask<Void, Void, String> {
+    private class createTranslator extends AsyncTask<Message, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Message... params) {
+
+
+            StringBuilder result = new StringBuilder();
+
 
             try {
-//                params(0);
-//                params(1);
-//                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
-//                String result = translator.translate();
-//
-//
-//                return result;
-                Thread.sleep(2000);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return null;
+                String encodedText = URLEncoder.encode(params[0].getMessage(), "UTF-8");
+                String originalLanguage = Config.getLangCode(params[0].getOriginalLanguage());
+                String targetLanguage = Config.getLangCode(current_user.getReceivingLanguage());
+                String urlStr = "https://www.googleapis.com/language/translate/v2?key=" + Config.BOSS_API_KEY +
+                        "&q=" + encodedText +
+                        "&target=" + targetLanguage +
+                        "&source=" + originalLanguage;
 
+                URL url = new URL(urlStr);
+
+                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                InputStream stream;
+                if (conn.getResponseCode() == 200) //success
+                {
+                    stream = conn.getInputStream();
+                } else
+                    stream = conn.getErrorStream();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+                JsonParser parser = new JsonParser();
+
+                JsonElement element = parser.parse(result.toString());
+
+                if (element.isJsonObject()) {
+                    JsonObject obj = element.getAsJsonObject();
+                    if (obj.get("error") == null) {
+                        String translatedMsg = obj.get("data").getAsJsonObject().
+                                get("translations").getAsJsonArray().
+                                get(0).getAsJsonObject().
+                                get("translatedText").getAsString();
+                        params[0].setTranslatedMessage(translatedMsg);
+                        translatedText = translatedMsg;
+                        System.out.println("original message  " + params[0].getMessage());
+                        System.out.println("Result from api  " + translatedMsg);
+                        return true;
+                    }
+                }
+
+                if (conn.getResponseCode() != 200) {
+                    System.err.println(result);
+                }
+
+            } catch (IOException | JsonSyntaxException ex) {
+                System.err.println(ex.getMessage());
+            }
+
+            System.out.println("Did not translate  " + params[0].getMessage());
+
+            return false;
         }
 
+        @Override
+        protected void onPostExecute(Boolean translated) {
+            super.onPostExecute(translated);
+            if (translated) {
+                messageListAdapter.notifyDataSetChanged();
+            }
+
+
+        }
     }
 
 
