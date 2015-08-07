@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.android.interpreter.Config;
 import com.android.interpreter.interpreter.R;
 import com.android.interpreter.util.Conversation;
@@ -28,7 +29,7 @@ public class SearchActivity extends AbstractActivity {
     private Button initiateChat;
     ArrayList<User> allUsers = new ArrayList<>();
     private User wantedUser;
-    private User currentuser;
+    private User current_user;
 
     private void getAllUsers() {
 
@@ -66,6 +67,25 @@ public class SearchActivity extends AbstractActivity {
         SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
         final String currentUser = settings.getString("CURRENT_USER", null);
 
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+
+                current_user = snapshot.getValue(User.class);
+// "email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
+//                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
+
         result = (TextView) findViewById(R.id.search_result);
         initiateChat = (Button) findViewById(R.id.initiate_button);
 
@@ -92,14 +112,22 @@ public class SearchActivity extends AbstractActivity {
 
                 // We need to add the conversations (twice)
                 Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
-                Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
 
-                Conversation conv = new Conversation();
-                conversationOfRef.push().setValue(receiverID);
+                System.out.println("in search activirty");
+                System.out.println("in search activirty");
+                System.out.println("in search activirty");
+                System.out.println("in search activirty");
+                System.out.println(current_user.getReceivingLanguage());
+                System.out.println(current_user.getSendingLanguage());
+                System.out.println(current_user.getNickname());
+
+                Conversation conv = new Conversation(current_user.getReceivingLanguage(), current_user.getSendingLanguage(), current_user.getUid(), senderID);
+                conversationOfRef.push().setValue(conv);
 
 
                 conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(receiverID));
-                conversationOfRef.push().setValue(senderID);
+                Conversation conv2 = new Conversation(current_user.getReceivingLanguage(), current_user.getSendingLanguage(), current_user.getUid(), receiverID);
+                conversationOfRef.push().setValue(conv2);
 
                 // Now we add the first message to this conversation.
                 Firebase chatRef = new Firebase(DBConnector.getPathToMessages(senderID, receiverID));
@@ -125,8 +153,8 @@ public class SearchActivity extends AbstractActivity {
                 wantedUser = null;
                 String adress = String.valueOf(((EditText) findViewById(R.id.search_text)).getText());
 
-                for(User user : allUsers) {
-                    if(user.getEmail().equals(adress)) {
+                for (User user : allUsers) {
+                    if (user.getEmail().equals(adress)) {
                         wantedUser = user;
                     }
                 }
