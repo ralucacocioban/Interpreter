@@ -74,21 +74,20 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("CURRENT_USER", result.get("uid").toString());
 
-
                     Firebase ref = new Firebase(Config.mainFireBaseRef);
 
                     AuthData authData = ref.getAuth();
                     if (authData != null) {
 
                         Firebase userRef = new Firebase(DBConnector.getPathToUser(authData.getAuth().get("uid").toString()));
+                        Firebase f = new Firebase(DBConnector.getPathToAllUsers());
 
-                        System.out.println("aici");
-                        System.out.println();
-                       Log.d("djhdjjd" , authData.getAuth().get("uid").toString());
                         System.out.println(authData);
                         System.out.println(authData.getAuth().get("uid"));
                         System.out.println(authData.getProviderData().get("email"));
-                        User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString(), new UserDetails());
+
+                        User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString(), "", "", "", "");
+                        f.push().setValue(currentUser);
                         userRef.push().setValue(currentUser);
                     }
 
