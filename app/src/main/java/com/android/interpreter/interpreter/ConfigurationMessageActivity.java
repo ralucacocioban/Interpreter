@@ -1,5 +1,7 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -8,10 +10,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 public class ConfigurationMessageActivity extends AbstractActivity {
     TextView text;
@@ -19,13 +26,46 @@ public class ConfigurationMessageActivity extends AbstractActivity {
     Spinner sendingLanguageDropDown;
     TextView receivingLanguage;
     Spinner receivingLanguageDropDown;
+    ImageButton imageButton;
     Button saveButton;
+    String sendingL;
+    String receivingL;
     Helper helper = new Helper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+        final String currentUser = settings.getString("CURRENT_USER", null);
+
+        System.out.println("#############current user in Configuration Activity  " + currentUser);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration_message);
+
+
+
+        System.out.println("current user in chat " + currentUser);
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                //nickNameEdit.setText((String) snapshot.child("nickname").getValue());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConfigurationMessageActivity.this, ConversationsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         text = (TextView)findViewById(R.id.text);
         sendingLanguage = (TextView)findViewById(R.id.sendingLanguage);
@@ -45,7 +85,7 @@ public class ConfigurationMessageActivity extends AbstractActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedSendingLang = (String) parent.getItemAtPosition(position);
-                //TODO: set selectedSendingLang in DB
+                sendingL = selectedSendingLang;
             }
 
             @Override
@@ -61,8 +101,8 @@ public class ConfigurationMessageActivity extends AbstractActivity {
         receivingLanguageDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedReceivedLang = (String) parent.getItemAtPosition(position);
-                //TODO: set selectedReceivedLang in DB
+                String receivedReceivedLang = (String) parent.getItemAtPosition(position);
+                receivingL = receivedReceivedLang;
             }
 
             @Override
@@ -74,7 +114,17 @@ public class ConfigurationMessageActivity extends AbstractActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: call intent with conversations
+
+
+                if (currentUser != null) {
+                    Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+
+                    userRef.child("sendingLanguage").setValue(sendingL);
+                    userRef.child("receivingLanguage").setValue(receivingL);
+                }
+
+                Intent convIntent = new Intent(ConfigurationMessageActivity.this, ConversationsActivity.class);
+                startActivity(convIntent);
             }
         });
     }

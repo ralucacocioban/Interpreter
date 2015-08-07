@@ -18,6 +18,7 @@
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
         <item name="android:textSize">17sp</item>
+        <item name="android:textCursorDrawable">@null</item>
         <item name="android:background">#F5F5F5</item>
         <item name="android:textColorHint">#B6B6B6</item>
         <item name="android:height">50dp</item>
@@ -30,6 +31,8 @@
         <item name="android:height">50dp</item>
         <item name="android:textColor">#F5F5F5</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
     </style>
 
     <style name="AppTheme.Translucent" parent="AppTheme">

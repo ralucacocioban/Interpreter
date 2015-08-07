@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,8 @@ public class ChatActivity extends Activity {
 
     // Parts needed for the UI, where all the messages are stored in 'messages'.
     private ListView messageList;
+    ImageButton imageButton;
+    ImageButton action_settings;
     private MessageListAdapter messageListAdapter;
     private ArrayList<Message> messages = new ArrayList<>();
 
@@ -73,6 +76,24 @@ public class ChatActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatActivity.this, ConversationsActivity.class);
+                startActivity(intent);
+            }
+        });
+        action_settings = (ImageButton)findViewById(R.id.action_settings);
+        action_settings.setVisibility(View.VISIBLE);
+        action_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatActivity.this, ConfigurationMessageActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Firebase.setAndroidContext(this);
 
@@ -98,6 +119,22 @@ public class ChatActivity extends Activity {
         messageList = (ListView) findViewById(R.id.messages);
         messageListAdapter = new MessageListAdapter();
         messageList.setAdapter(messageListAdapter);
+
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+//        public boolean onKeyDown(int keyCode, KeyEvent event) {
+//            if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                // your code
+//                return true;
+//            }
+//
+//            return super.onKeyDown(keyCode, event);
+//        }
 
         // Setting up the correct root reference, giving a Conversation.
 
@@ -201,8 +238,15 @@ public class ChatActivity extends Activity {
                             showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, current_user.getReceivingLanguage());
 
                             String targetlanguage = current_user.getReceivingLanguage();
+
                             new createTranslator().execute(messages.get(position));
                             showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, messages.get(position).getTranslatedMessage());
+
+//                            new createTranslator().execute();
+                            String translatedText = translator.translate(messages.get(position).getMessage(), Config.getLangCode(originallanguage), Config.getLangCode(targetlanguage));
+
+
+                            showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, translatedText);
                             startActivity(showDetails);
 
                             return true;
@@ -248,6 +292,7 @@ public class ChatActivity extends Activity {
             public TextView date;
         }
     }
+
 
     private class createTranslator extends AsyncTask<Message, Void, Boolean> {
 
@@ -325,6 +370,7 @@ public class ChatActivity extends Activity {
 
         }
     }
+
 
 
 }

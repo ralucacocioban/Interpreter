@@ -1,50 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     android:weightSum="8">
 
     <TextView
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <RelativeLayout
         android:id="@+id/cell"
         android:layout_width="0dp"
-        android:layout_weight="7"
         android:layout_height="wrap_content"
+        android:layout_weight="7"
         android:padding="4dp">
 
         <LinearLayout
             android:id="@+id/messagebox"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/balloon_outgoing_normal"
-            android:backgroundTint="#ffff8df2"
             android:layout_alignParentRight="true"
-            android:padding="4dp" >
+            android:background="@drawable/balloon_outgoing_normal"
+            android:backgroundTint="#FF5252"
+            android:orientation="vertical"
+            android:padding="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp">
 
             <TextView
                 android:id="@+id/content"
-                android:layout_marginRight="15dp"
-                android:textSize="22sp"
-                android:text="Hello World, this is a much longer message"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:paddingLeft="8dp"
+                android:text="Hello World, this is a much longer message"
+                android:textColor="#F5F5F5"
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/date"
-                android:layout_marginRight="15dp"
-                android:text="03-08-2014"
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"/>
+                android:layout_gravity="start"
+                android:paddingLeft="8dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="8dp"
+                android:text="03-08-2014"
+                android:textColor="#96f5f5f5"
+                android:textSize="12sp" />
 
         </LinearLayout>
 

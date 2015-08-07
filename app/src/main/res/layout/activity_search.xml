@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:background="#E0F2F1"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -24,7 +23,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingTop="30dp"
             android:text="Type e-mail here"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
@@ -46,7 +45,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
-                android:background="@drawable/rectangle"
+                android:background="#F5F5F5"
+                android:layout_marginTop="20dp"
                 android:singleLine="true"
                 android:textAlignment="center" />
 
@@ -88,7 +88,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 android:textAlignment="center"
-                android:textSize="30sp" />
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -102,7 +103,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="CHAT!"
+            android:layout_marginTop="20dp"
+            android:text="Start chat"
             android:layout_below="@+id/layout2"
             android:layout_alignLeft="@+id/search_button"
             android:layout_alignStart="@+id/search_button" />

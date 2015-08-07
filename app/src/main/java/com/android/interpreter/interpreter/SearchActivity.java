@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.interpreter.Config;
@@ -27,6 +28,7 @@ public class SearchActivity extends AbstractActivity {
     ArrayList<User> allUsers = new ArrayList<>();
     private User wantedUser;
     private User current_user;
+    ImageButton imageButton;
 
     private void getAllUsers() {
 
@@ -58,6 +60,14 @@ public class SearchActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchActivity.this, ConversationsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getAllUsers();
 

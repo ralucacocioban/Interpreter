@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView password;
     TextView password2;
     Firebase rootRef;
+    ImageButton imageButton;
     private User current_user;
 
     private String uId = null;
@@ -39,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
         //getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         loginButton = (Button) findViewById(R.id.login_btn);
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setVisibility(View.INVISIBLE);
         email = (TextView) findViewById(R.id.email_input);
         password = (TextView) findViewById(R.id.password_input);
         password2 = (TextView) findViewById(R.id.password2_input);
