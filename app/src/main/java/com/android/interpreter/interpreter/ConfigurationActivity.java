@@ -2,9 +2,7 @@ package com.android.interpreter.interpreter;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,7 +13,7 @@ import android.widget.TextView;
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
 
-public class ConfigurationActivity extends AbstractActivity {
+public class ConfigurationActivity extends AppCompatActivity {
     TextView nickName;
     EditText nickNameEdit;
     TextView sendingLanguage;
@@ -38,6 +36,8 @@ public class ConfigurationActivity extends AbstractActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         nickName = (TextView) findViewById(R.id.nickName);
         nickNameEdit = (EditText) findViewById(R.id.nickNameEdit);

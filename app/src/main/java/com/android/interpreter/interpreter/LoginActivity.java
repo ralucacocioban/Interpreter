@@ -3,9 +3,7 @@ package com.android.interpreter.interpreter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,7 +21,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.Map;
 
-public class LoginActivity extends AbstractActivity {
+public class LoginActivity extends AppCompatActivity {
 
     Button loginButton;
     Button newUserButton;
@@ -39,6 +37,9 @@ public class LoginActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
 
         loginButton = (Button) findViewById(R.id.login_btn);
         email = (TextView) findViewById(R.id.email_input);
