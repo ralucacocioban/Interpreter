@@ -2,12 +2,9 @@ package com.android.interpreter.interpreter;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,8 +12,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.android.interpreter.Config;
+import com.android.interpreter.util.GoogleTranslate;
 import com.android.interpreter.util.Message;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -52,6 +49,8 @@ public class ChatActivity extends AbstractActivity {
     Firebase conversationOtherRef;
 
     Message newMessage;
+
+    GoogleTranslate translator = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +89,11 @@ public class ChatActivity extends AbstractActivity {
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
+
         });
+
+        //create connection to Google Translate API
+        new createTranslator().execute();
 
     }
 
@@ -230,6 +233,24 @@ public class ChatActivity extends AbstractActivity {
             public TextView content;
             public TextView date;
         }
+    }
+
+    private class createTranslator extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
     }
 
 
