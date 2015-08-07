@@ -3,14 +3,12 @@ package com.android.interpreter.interpreter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.interpreter.Config;
-import com.android.interpreter.interpreter.R;
 import com.android.interpreter.util.Conversation;
 import com.android.interpreter.util.Message;
 import com.android.interpreter.util.User;
@@ -18,7 +16,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -130,7 +127,6 @@ public class SearchActivity extends AbstractActivity {
                     conversationOfRef.push().setValue(conv2);
                 }
 
-
                 // Now we add the first message to this conversation.
                 Firebase chatRef = new Firebase(DBConnector.getPathToMessages(senderID, receiverID));
                 chatRef.push().setValue(firstMessage);
@@ -142,7 +138,6 @@ public class SearchActivity extends AbstractActivity {
                 toChat.putExtra(ChatActivity.SENDER_ID, senderID);
                 toChat.putExtra(ChatActivity.RECEIVER_ID, receiverID);
                 startActivity(toChat);
-
             }
         });
 

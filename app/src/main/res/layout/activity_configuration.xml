@@ -76,7 +76,8 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:background="#B2DFDB"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                />
 
             <TextView
                 android:id="@+id/receivingLanguage"

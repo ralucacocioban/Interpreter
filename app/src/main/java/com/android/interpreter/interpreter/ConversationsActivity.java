@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -66,6 +67,19 @@ public class ConversationsActivity extends AbstractActivity {
         setContentView(R.layout.conversations);
 
         mList = (ListView) findViewById(R.id.conversationsList);
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Conversation conversationClicked = (Conversation) mList.getItemAtPosition(position);
+                Intent intent = new Intent(ConversationsActivity.this, ChatActivity.class);
+                intent.putExtra(ChatActivity.SENDER_ID, current_user.getUid());
+                intent.putExtra(ChatActivity.RECEIVER_ID, conversationClicked.getReceiverId());
+
+                startActivity(intent);
+            }
+        });
+
+
         mAdapter = new MyAdapter();
         mList.setAdapter(mAdapter);
         Firebase.setAndroidContext(this);
