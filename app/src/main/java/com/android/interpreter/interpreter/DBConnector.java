@@ -16,8 +16,8 @@ public class DBConnector {
         return path;
     }
 
-    public static String getPathToConversations(String senderId, String receiverId) {
-        String path = String.format("%s/conversations/%s/%s", Config.mainFireBaseRef, senderId, receiverId);
+    public static String getPathToConversationsOf(String userId) {
+        String path = String.format("%s/conversations/%s/all/", Config.mainFireBaseRef, userId);
         return path;
     }
 
