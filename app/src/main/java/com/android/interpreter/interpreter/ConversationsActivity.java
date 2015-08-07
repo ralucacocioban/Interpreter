@@ -2,12 +2,8 @@ package com.android.interpreter.interpreter;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,7 +16,6 @@ import android.widget.TextView;
 import com.android.interpreter.Config;
 import com.android.interpreter.util.Conversation;
 import com.android.interpreter.util.User;
-import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -46,15 +41,14 @@ public class ConversationsActivity extends AbstractActivity {
         convRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
-                System.out.println("on data changeee");
-
+                
+                Conversation current;
+                ArrayList<Conversation> newConversations = new ArrayList<Conversation>((int) snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Conversation conversation = postSnapshot.getValue(Conversation.class);
-                    conversations.add(conversation);
-                    System.out.println(conversation.getReceivingLanguage()+ "     this is the receiving language  ");
+                    current = postSnapshot.getValue(Conversation.class);
+                    newConversations.add(current);
                 }
+                conversations = newConversations;
                 mAdapter.notifyDataSetChanged();
             }
 
