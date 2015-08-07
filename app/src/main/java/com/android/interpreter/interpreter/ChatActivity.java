@@ -119,7 +119,6 @@ public class ChatActivity extends AbstractActivity {
 
     }
 
-
     public void sendMessage(View view) {
 
         newMessage = new Message();
@@ -185,7 +184,7 @@ public class ChatActivity extends AbstractActivity {
                 final String currentUser = settings.getString("CURRENT_USER", null);
 
                 // When the current user is the sender of this message, the message is placed right.
-                if (currentUser.equals(messages.get(position).getSenderID())) {
+                if (current_user.getUid().equals(senderID)) {
                     view = inflater.inflate(R.layout.message_outgoing, null);
                 }
                 // Otherwise, when the current user is the receiver, the message is placed left
@@ -201,22 +200,10 @@ public class ChatActivity extends AbstractActivity {
                             String originallanguage = messages.get(position).getOriginalLanguage();
                             showDetails.putExtra(MessageDetailsActivity.ORIGINAL_LANGUAGE, originallanguage);
                             showDetails.putExtra(MessageDetailsActivity.ORIGINAL_CONTENT, messages.get(position).getMessage());
-
-                            Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
-                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, (String) dataSnapshot.child("receivingLanguage").getValue());
-                                }
-
-                                @Override
-                                public void onCancelled(FirebaseError firebaseError) {
-
-                                }
-                            });
+                            showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, current_user.getReceivingLanguage());
 
 
-                            String targetlanguage = showDetails.getStringExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE);
+                            String targetlanguage = current_user.getReceivingLanguage();
                             // DO YOUR MAGIC
 
                             String translatedText = null;
@@ -240,11 +227,18 @@ public class ChatActivity extends AbstractActivity {
                 holder = (ViewHolder) view.getTag();
             }
 
-
-            // Assign values to the view
             Message current = messages.get(position);
-            // TODO - Get the translated message shown (not stored in DB)
-            holder.content.setText(current.getMessage());
+
+            if (current_user.getUid().equals(senderID)) {           // NO TRANSLATION
+                holder.content.setText(current.getMessage());
+            }
+            else {
+                String targetlanguage = current_user.getReceivingLanguage();
+                // DO YOUR MAGIC
+
+                holder.content.setText("" /* RESULT */);
+            }
+            
             holder.date.setText(df.format(current.getDate()));          // more info on df : top of the class
 
             return view;
