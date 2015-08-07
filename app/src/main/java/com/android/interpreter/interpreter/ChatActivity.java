@@ -202,7 +202,9 @@ public class ChatActivity extends AbstractActivity {
                             showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, current_user.getReceivingLanguage());
 
                             String targetlanguage = current_user.getReceivingLanguage();
-                            String translatedText = translator.translate(messages.get(position).getMessage(), originallanguage, targetlanguage);
+
+                            String translatedText = translator.translate(messages.get(position).getMessage(), Config.getLangCode(originallanguage), Config.getLangCode(targetlanguage));
+
 
                             showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, translatedText);
                             startActivity(showDetails);
@@ -230,7 +232,7 @@ public class ChatActivity extends AbstractActivity {
             else {
                 String targetlanguage = current_user.getReceivingLanguage();
                 holder.content.setText(translator.translate(messages.get(position).getMessage(),
-                        messages.get(position).getOriginalLanguage(), targetlanguage)
+                                Config.getLangCode(messages.get(position).getOriginalLanguage()), Config.getLangCode(targetlanguage))
                 );
             }
             

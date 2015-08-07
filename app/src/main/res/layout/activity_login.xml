@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     tools:context="com.android.interpreter.interpreter.LoginActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"
