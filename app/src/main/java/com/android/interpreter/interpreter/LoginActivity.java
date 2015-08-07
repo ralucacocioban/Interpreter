@@ -14,8 +14,10 @@ import com.android.interpreter.Config;
 import com.android.interpreter.util.User;
 import com.android.interpreter.util.UserDetails;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.Map;
 
@@ -29,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView password;
     TextView password2;
     Firebase rootRef;
+    private User current_user;
 
     private String uId = null;
 
@@ -68,9 +71,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "created user!", Toast.LENGTH_LONG).show();
                     System.out.println(result.get("uid"));
 
-                    SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("CURRENT_USER", result.get("uid").toString());
 
                     System.out.println("user before putting to preferences " + result.get("uid").toString());
 
@@ -79,19 +79,31 @@ public class LoginActivity extends AppCompatActivity {
                     AuthData authData = ref.getAuth();
                     if (authData != null) {
 
+                        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("CURRENT_USER", authData.getUid());
+
                         Firebase userRef = new Firebase(DBConnector.getPathToUser(authData.getAuth().get("uid").toString()));
+
                         Firebase f = new Firebase(DBConnector.getPathToAllUsers());
 
+                        System.out.println("in login");
+                        System.out.println("in login");
+                        System.out.println("in login");
+                        System.out.println("in login");
+                        System.out.println("in login");
                         System.out.println(authData);
-                        System.out.println(authData.getAuth().get("uid"));
-                        System.out.println(authData.getProviderData().get("email"));
+                        System.out.println("email " + authData.getProviderData().get("email").toString());
 
-                        User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString(), "", "", "", "");
-                        f.push().setValue(currentUser);
-                        userRef.setValue(currentUser);
+
+                        System.out.println("uid " + authData.getAuth().get("uid").toString());
+
+                        current_user = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString(), "", "", "", "");
+                        f.push().setValue(current_user);
+                        userRef.setValue(current_user);
+                        editor.commit();
                     }
 
-                    editor.commit();
                     launchConfigPage();
                 }
 

@@ -29,7 +29,6 @@ public class Message {
         this.senderID = senderID;
     }
 
-
     public Date getDate() {
         return date;
     }

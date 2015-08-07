@@ -2,11 +2,9 @@ package com.android.interpreter.interpreter;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,9 +12,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.android.interpreter.Config;
+import com.android.interpreter.util.GoogleTranslate;
 import com.android.interpreter.util.Message;
+import com.android.interpreter.util.User;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -34,11 +33,16 @@ public class ChatActivity extends AbstractActivity {
 
     public final static String SENDER_ID = "sender";
     public final static String RECEIVER_ID = "receiver";
+    public User current_user;
+
 
     // Parts needed for the UI, where all the messages are stored in 'messages'.
     private ListView messageList;
     private MessageListAdapter messageListAdapter;
     private ArrayList<Message> messages = new ArrayList<>();
+
+    String receiverID;
+    String senderID;
 
     // This will be the format we will use at the bottom of the message, displaying the date.
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -47,10 +51,36 @@ public class ChatActivity extends AbstractActivity {
     Firebase conversationHereRef;
     Firebase conversationOtherRef;
 
+    Message newMessage;
+
+    GoogleTranslate translator = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+
+        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+        final String currentUser = settings.getString("CURRENT_USER", null);
+
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+
+                current_user = snapshot.getValue(User.class);
+// "email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
+//                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
 
         messageList = (ListView) findViewById(R.id.messages);
         messageListAdapter = new MessageListAdapter();
@@ -58,8 +88,8 @@ public class ChatActivity extends AbstractActivity {
 
         // Setting up the correct root reference, giving a Conversation.
         Firebase.setAndroidContext(this);
-        String senderID = getIntent().getStringExtra(SENDER_ID);
-        String receiverID = getIntent().getStringExtra(RECEIVER_ID);
+        senderID = getIntent().getStringExtra(SENDER_ID);
+        receiverID = getIntent().getStringExtra(RECEIVER_ID);
         conversationHereRef = new Firebase (DBConnector.getPathToMessages(senderID, receiverID));
         conversationOtherRef = new Firebase (DBConnector.getPathToMessages(receiverID, senderID));
 
@@ -84,28 +114,42 @@ public class ChatActivity extends AbstractActivity {
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
+
         });
+
+        //create connection to Google Translate API
+        new createTranslator().execute();
 
     }
 
-
     public void sendMessage(View view) {
 
-        Message newMessage = new Message();
+        newMessage = new Message();
         EditText et = (EditText) findViewById(R.id.new_message);
         newMessage.setMessage(String.valueOf(et.getText()));
         newMessage.setDate(new Date());
 
         SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-        final String currentUser = settings.getString("CURRENT_USER", null);
-        newMessage.setSenderID(currentUser);
+        final String currentUserID = settings.getString("CURRENT_USER", null);
+        newMessage.setSenderID(currentUserID);
 
-        // TODO - set originalLanguage of the message;
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUserID));
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                newMessage.setOriginalLanguage((String) dataSnapshot.child("sendingLanguage").getValue());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
         conversationHereRef.push().setValue(newMessage);
         conversationOtherRef.push().setValue(newMessage);
 
-        // Create the sent text from the EditText
+        // Delete the sent text from the EditText
         et.setText("");
     }
 
@@ -143,12 +187,36 @@ public class ChatActivity extends AbstractActivity {
                 final String currentUser = settings.getString("CURRENT_USER", null);
 
                 // When the current user is the sender of this message, the message is placed right.
-                if (currentUser.equals(messages.get(position).getSenderID())) {
+                if (current_user.getUid().equals(senderID)) {
                     view = inflater.inflate(R.layout.message_outgoing, null);
                 }
                 // Otherwise, when the current user is the receiver, the message is placed left
                 else {
                     view = inflater.inflate(R.layout.message_incoming, null);
+
+                    view.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+
+                            //TODO - create beautifull transition to message details
+                            final Intent showDetails = new Intent(ChatActivity.this, MessageDetailsActivity.class);
+                            String originallanguage = messages.get(position).getOriginalLanguage();
+                            showDetails.putExtra(MessageDetailsActivity.ORIGINAL_LANGUAGE, originallanguage);
+                            showDetails.putExtra(MessageDetailsActivity.ORIGINAL_CONTENT, messages.get(position).getMessage());
+                            showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, current_user.getReceivingLanguage());
+
+
+                            String targetlanguage = current_user.getReceivingLanguage();
+
+                            String translatedText = translator.translate(messages.get(position).getMessage(), originallanguage, targetlanguage);
+                            ;
+
+                            showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, translatedText);
+                            startActivity(showDetails);
+
+                            return true;
+                        }
+                    });
                 }
 
                 holder = new ViewHolder();
@@ -156,35 +224,26 @@ public class ChatActivity extends AbstractActivity {
                 holder.date = (TextView) view.findViewById(R.id.date);
                 view.setTag(holder);
 
-                view.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-
-                        //TODO - create beautifull transition to message details
-                        Intent showDetails = new Intent(ChatActivity.this, MessageDetailsActivity.class);
-                        showDetails.putExtra(MessageDetailsActivity.ORIGINAL_LANGUAGE, messages.get(position).getOriginalLanguage());
-                        showDetails.putExtra(MessageDetailsActivity.ORIGINAL_CONTENT, messages.get(position).getMessage());
-                        // TODO - Get the translate language and translated content
-                        showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, "");
-                        showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, "");
-                        // TODO - discuss whether we want the Date of the message as well in the detailled view.
-
-                        startActivity(showDetails);
-
-                        return true;
-                    }
-                });
 
             } else {
                 view = convertView;
                 holder = (ViewHolder) view.getTag();
             }
 
-
-            // Assign values to the view
             Message current = messages.get(position);
-            // TODO - Get the translated message shown (not stored in DB)
-            holder.content.setText(current.getMessage());
+
+            if (current_user.getUid().equals(senderID)) {           // NO TRANSLATION
+                holder.content.setText(current.getMessage());
+            }
+            else {
+                String targetlanguage = current_user.getReceivingLanguage();
+
+
+                holder.content.setText(translator.translate(messages.get(position).getMessage(),
+                        messages.get(position).getOriginalLanguage(), targetlanguage)
+                );
+            }
+            
             holder.date.setText(df.format(current.getDate()));          // more info on df : top of the class
 
             return view;
@@ -195,6 +254,24 @@ public class ChatActivity extends AbstractActivity {
             public TextView content;
             public TextView date;
         }
+    }
+
+    private class createTranslator extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
     }
 
 

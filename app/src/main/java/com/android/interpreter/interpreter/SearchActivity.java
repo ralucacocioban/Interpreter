@@ -3,12 +3,15 @@ package com.android.interpreter.interpreter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.android.interpreter.Config;
 import com.android.interpreter.interpreter.R;
+import com.android.interpreter.util.Conversation;
 import com.android.interpreter.util.Message;
 import com.android.interpreter.util.User;
 import com.firebase.client.DataSnapshot;
@@ -18,6 +21,7 @@ import com.firebase.client.ValueEventListener;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SearchActivity extends AbstractActivity {
 
@@ -25,6 +29,7 @@ public class SearchActivity extends AbstractActivity {
     private Button initiateChat;
     ArrayList<User> allUsers = new ArrayList<>();
     private User wantedUser;
+    private User current_user;
 
     private void getAllUsers() {
 
@@ -59,6 +64,25 @@ public class SearchActivity extends AbstractActivity {
 
         getAllUsers();
 
+        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+        final String currentUser = settings.getString("CURRENT_USER", null);
+
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+                current_user = snapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
+
         result = (TextView) findViewById(R.id.search_result);
         initiateChat = (Button) findViewById(R.id.initiate_button);
 
@@ -79,15 +103,33 @@ public class SearchActivity extends AbstractActivity {
                 // Create a introduction message.
                 Message firstMessage = new Message();
                 firstMessage.setMessage("Hello, I want to chat with you!");
-                firstMessage.setOriginalLanguage("en");
+                firstMessage.setOriginalLanguage("English");
                 firstMessage.setSenderID(senderID);
-                firstMessage.getDate();
+                firstMessage.setDate(new Date());
 
                 // We need to add the conversations (twice)
                 Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
-                conversationOfRef.push().setValue(receiverID);
+                System.out.println(current_user.getReceivingLanguage());
+                System.out.println(current_user.getSendingLanguage());
+                System.out.println(current_user.getNickname());
+
+                Conversation conv = new Conversation(current_user.getReceivingLanguage(), current_user.getSendingLanguage(), current_user.getUid(), senderID);
+                conversationOfRef.push().setValue(conv);
+
                 conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(receiverID));
-                conversationOfRef.push().setValue(senderID);
+
+                if (wantedUser != null) {
+                    System.out.println("in different than null");
+                    System.out.println("in different than null");
+                    System.out.println("in different than null");
+                    System.out.println("in different than null");
+                    System.out.println(wantedUser.getReceivingLanguage());
+                    System.out.println(wantedUser.getSendingLanguage());
+
+                    Conversation conv2 = new Conversation(wantedUser.getReceivingLanguage(), wantedUser.getSendingLanguage(), wantedUser.getUid(), receiverID);
+                    conversationOfRef.push().setValue(conv2);
+                }
+
 
                 // Now we add the first message to this conversation.
                 Firebase chatRef = new Firebase(DBConnector.getPathToMessages(senderID, receiverID));
@@ -104,23 +146,29 @@ public class SearchActivity extends AbstractActivity {
             }
         });
 
-        // TODO - fill the arrayList with all the users.
-
 
         Button searchButton = (Button) findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                wantedUser = null;
                 String adress = String.valueOf(((EditText) findViewById(R.id.search_text)).getText());
 
-                if (allUsers.contains(adress)) {     // Yes, he user exists.
-                    // TODO - enhance information of the found user.
+                for (User user : allUsers) {
+                    if (user.getEmail().equals(adress)) {
+                        wantedUser = user;
+                    }
+                }
+
+                if (wantedUser != null) {     // Yes, he user exists.
                     result.setText("Yes, we found someone, do you want to initiate chat?");
                     initiateChat.setVisibility(View.VISIBLE);
                     initiateChat.setClickable(true);
                 } else {  // Sorry sorry.
                     result.setText("We are fairly sorry, try again.");
+                    initiateChat.setVisibility(View.INVISIBLE);
+                    initiateChat.setClickable(false);
                 }
             }
         });
