@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.android.interpreter.Config;
 import com.android.interpreter.util.Conversation;
 import com.android.interpreter.util.User;
@@ -86,8 +87,9 @@ public class ConversationsActivity extends AbstractActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
 
-                current_user = new User(snapshot.child("email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
-                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue(String.class));
+                current_user = snapshot.getValue(User.class);
+// "email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
+//                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue(String.class));
             }
 
             @Override
