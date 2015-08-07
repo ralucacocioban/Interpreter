@@ -12,7 +12,7 @@ public class DBConnector {
     }
 
     public static String getPathToUser(String userId) {
-        String path = String.format("%s/%s", Config.usersFirebasePath, userId);
+        String path = String.format("%s/%s/", Config.usersFirebasePath, userId);
         return path;
     }
 

@@ -4,11 +4,16 @@ package com.android.interpreter.util;
 public class Conversation {
     private String receivingLanguage;
     private String sendingLanguage;
+    private String senderId;
+    private String receiverId;
 
 
-    public Conversation(String receivingLanguage, String sendingLanguage) {
+    public Conversation(String receivingLanguage, String sendingLanguage, String senderId, String receiverId) {
         this.receivingLanguage = receivingLanguage;
         this.sendingLanguage = sendingLanguage;
+        this.senderId = senderId;
+        
+
     }
 
     public Conversation() {

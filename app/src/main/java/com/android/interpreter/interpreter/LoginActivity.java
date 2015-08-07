@@ -70,9 +70,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "created user!", Toast.LENGTH_LONG).show();
                     System.out.println(result.get("uid"));
 
-                    SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("CURRENT_USER", result.get("uid").toString());
 
                     System.out.println("user before putting to preferences " + result.get("uid").toString());
 
@@ -80,6 +77,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     AuthData authData = ref.getAuth();
                     if (authData != null) {
+
+                        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("CURRENT_USER", authData.getUid());
 
                         Firebase userRef = new Firebase(DBConnector.getPathToUser(authData.getAuth().get("uid").toString()));
                         Firebase f = new Firebase(DBConnector.getPathToAllUsers());
@@ -91,9 +92,9 @@ public class LoginActivity extends AppCompatActivity {
                         User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString(), "", "", "", "");
                         f.push().setValue(currentUser);
                         userRef.setValue(currentUser);
+                        editor.commit();
                     }
 
-                    editor.commit();
                     launchConfigPage();
                 }
 
