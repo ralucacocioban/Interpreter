@@ -49,6 +49,9 @@ public class ConversationsActivity extends AbstractActivity {
 
         handleConversations();
 
+
+        getAllConversations
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
