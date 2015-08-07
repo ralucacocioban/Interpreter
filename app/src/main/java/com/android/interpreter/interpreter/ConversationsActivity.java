@@ -46,15 +46,14 @@ public class ConversationsActivity extends AbstractActivity {
         convRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-                System.out.println("There are " + snapshot.getChildrenCount() + " messages");
-                System.out.println("on data changeee");
-
+                
+                Conversation current;
+                ArrayList<Conversation> newConversations = new ArrayList<Conversation>((int) snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Conversation conversation = postSnapshot.getValue(Conversation.class);
-                    conversations.add(conversation);
-                    System.out.println(conversation.getReceivingLanguage()+ "     this is the receiving language  ");
+                    current = postSnapshot.getValue(Conversation.class);
+                    newConversations.add(current);
                 }
+                conversations = newConversations;
                 mAdapter.notifyDataSetChanged();
             }
 

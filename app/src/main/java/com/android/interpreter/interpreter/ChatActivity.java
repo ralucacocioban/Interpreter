@@ -94,7 +94,6 @@ public class ChatActivity extends AbstractActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                // TODO - optimize this if needed
                 Message current;
                 ArrayList<Message> newmessages = new ArrayList<>((int) snapshot.getChildrenCount());
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
@@ -180,11 +179,11 @@ public class ChatActivity extends AbstractActivity {
                 LayoutInflater inflater = LayoutInflater.from(ChatActivity.this);
 
                 // Here we get the currentUserID and then compare it with the sender of the message.
-                SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-                final String currentUser = settings.getString("CURRENT_USER", null);
+                // SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                // final String currentUser = settings.getString("CURRENT_USER", null);
 
                 // When the current user is the sender of this message, the message is placed right.
-                if (current_user.getUid().equals(senderID)) {
+                if (current_user.getUid().equals(messages.get(position).getSenderID())) {
                     view = inflater.inflate(R.layout.message_outgoing, null);
                 }
                 // Otherwise, when the current user is the receiver, the message is placed left
@@ -225,7 +224,7 @@ public class ChatActivity extends AbstractActivity {
 
             Message current = messages.get(position);
 
-            if (current_user.getUid().equals(senderID)) {           // NO TRANSLATION
+            if (current_user.getUid().equals(messages.get(position).getSenderID())) {           // NO TRANSLATION
                 holder.content.setText(current.getMessage());
             }
             else {
