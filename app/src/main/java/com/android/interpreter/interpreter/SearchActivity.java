@@ -70,6 +70,7 @@ public class SearchActivity extends AbstractActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
+                System.out.println("BUTBUTBUT");
                 current_user = snapshot.getValue(User.class);
             }
 
