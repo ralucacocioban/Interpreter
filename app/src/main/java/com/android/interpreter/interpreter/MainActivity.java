@@ -30,30 +30,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(loginIntent);
         }
 
-        Firebase.setAndroidContext(this);
-//        final Firebase userRef = new Firebase("https://flickering-heat-70.firebaseio.com/interpreter/user/simplelogin:25");
-
-        final Firebase userRef = new Firebase(DBConnector.getPathToUser("simplelogin:25"));
-
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("BUGBUG", "sendingLanguage ref : " + dataSnapshot.child("sendingLanguage").getRef());
-
-                Log.d("BUGBUG", "sendingLanguage is : " + dataSnapshot.child("sendingLanguage").getValue());
-
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-
-
-
         this.finish();
     }
 

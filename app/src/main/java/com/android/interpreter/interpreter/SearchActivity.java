@@ -137,6 +137,8 @@ public class SearchActivity extends AbstractActivity {
                     initiateChat.setClickable(true);
                 } else {  // Sorry sorry.
                     result.setText("We are fairly sorry, try again.");
+                    initiateChat.setVisibility(View.INVISIBLE);
+                    initiateChat.setClickable(false);
                 }
             }
         });
