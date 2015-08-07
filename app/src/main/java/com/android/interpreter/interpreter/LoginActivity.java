@@ -10,14 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.interpreter.Config;
-import com.android.interpreter.util.Conversation;
-import com.android.interpreter.util.User;
 import com.firebase.client.AuthData;
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.Map;
 
@@ -26,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     Button newUserButton;
     Button registerButton;
+    Button cancelButton;
     TextView email;
     TextView password;
     TextView password2;
@@ -47,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         password2 = (TextView) findViewById(R.id.password2_input);
         registerButton = (Button) findViewById(R.id.register_btn);
         newUserButton = (Button) findViewById(R.id.new_user_btn);
+        cancelButton = (Button)findViewById(R.id.cancel_register_btn);
         Firebase.setAndroidContext(this);
         rootRef = new Firebase(Config.mainFireBaseRef);
     }
@@ -57,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setVisibility(View.INVISIBLE);
         newUserButton.setVisibility(View.GONE);
         registerButton.setVisibility(View.VISIBLE);
+        cancelButton.setVisibility(View.VISIBLE);
     }
 
     public void register(View view) {
@@ -120,5 +118,13 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "Login failed!", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    public void cancelRegister(View view){
+        password2.setVisibility(View.GONE);
+        loginButton.setVisibility(View.VISIBLE);
+        newUserButton.setVisibility(View.VISIBLE);
+        registerButton.setVisibility(View.GONE);
+        cancelButton.setVisibility(View.GONE);
     }
 }
