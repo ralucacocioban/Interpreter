@@ -7,12 +7,22 @@ public class User {
 
     private String uid;
     private String email;
-    private UserDetails details;
     private String receivingLanguage;
     private String sendingLanguage;
     private String nickname;
     private String GCMtoken;
 
+    public User(){
+    }
+
+    public User(String email, String uid, String receivingLanguage, String sendingLanguage, String nickname, String GCMtoken){
+        this.email = email;
+        this.uid = uid;
+        this.sendingLanguage= sendingLanguage;
+        this.receivingLanguage = receivingLanguage;
+        this.nickname = nickname;
+        this.GCMtoken = GCMtoken;
+    }
 
 
     public String getSendingLanguage() {
@@ -47,23 +57,6 @@ public class User {
         this.GCMtoken = GCMtoken;
     }
 
-    public User(){
-    }
-
-    public User(String email, String uid, UserDetails details){
-        this.email = email;
-        this.uid = uid;
-        this.details = details;
-    }
-
-    public UserDetails getDetails() {
-        return details;
-    }
-
-    public void setDetails(UserDetails details) {
-        this.details = details;
-    }
-
     public String getUid() {
         return uid;
     }
@@ -79,6 +72,5 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
 }

@@ -26,4 +26,9 @@ public class DBConnector {
         return path;
     }
 
+    public static String getPathToAllUsers() {
+        String path = String.format("%s/users/all", Config.mainFireBaseRef);
+        return path;
+    }
+
 }

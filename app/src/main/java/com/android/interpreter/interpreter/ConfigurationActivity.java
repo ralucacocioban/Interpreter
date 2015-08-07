@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
 import com.android.interpreter.util.UserDetails;
@@ -93,33 +94,28 @@ public class ConfigurationActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String nickName = nickNameEdit.getText().toString();
-                UserDetails details;
 
                 System.out.println("receving language");
                 System.out.println(receivingL);
 
-                if(nickName != null){
-                    //details = new UserDetails(nickName, sendingL, receivingL, Config.BOSS_API_KEY);
-                    Map<String, Object> nickname = new HashMap<String, Object>();
-                    Map<String, Object> sendingLanguage = new HashMap<String, Object>();
-                    Map<String, Object> receivingLanguage = new HashMap<String, Object>();
-                    nickname.put("nickname", nickName);
-
-//
-//
-//                    userRef.updateChildren(nickname);
-//                    userRef.updateChildren(nickname);
-//                    userRef.updateChildren(nickname);
-                }
-                else{
-                    //details = new UserDetails("", sendingL, receivingL, Config.BOSS_API_KEY);
-                }
-
-                if(currentUser != null){
+                if (currentUser != null) {
                     Firebase firebase = new Firebase(DBConnector.getPathToUsers());
-
                     Firebase userRef = firebase.child(currentUser);
 
+                    if (nickName != null) {
+                        Map<String, Object> nickname = new HashMap<String, Object>();
+                        nickname.put("nickname", nickName);
+                        userRef.updateChildren(nickname);
+
+                    } else {
+                        Map<String, Object> sendingLanguage = new HashMap<String, Object>();
+                        Map<String, Object> receivingLanguage = new HashMap<String, Object>();
+
+                        sendingLanguage.put("sendingLanguage", sendingL);
+                        sendingLanguage.put("receivingLanguage", receivingL);
+                        userRef.updateChildren(sendingLanguage);
+                        userRef.updateChildren(receivingLanguage);
+                    }
                 }
 
                 Intent convIntent = new Intent(ConfigurationActivity.this, ConversationsActivity.class);
