@@ -24,11 +24,11 @@ public class SearchActivity extends AbstractActivity {
     private TextView result;
     private Button initiateChat;
     ArrayList<User> allUsers = new ArrayList<>();
+    private User wantedUser;
 
-    // DOES NOT WORK
     private void getAllUsers() {
 
-        Firebase usersRef = new Firebase(DBConnector.getPathToUsers());
+        Firebase usersRef = new Firebase(DBConnector.getPathToAllUsers());
 
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -38,10 +38,9 @@ public class SearchActivity extends AbstractActivity {
                 System.out.println("There are " + snapshot.getChildrenCount() + " users");
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
                     System.out.println("user here  " + postSnapshot.getValue().toString());
-//                    User user = postSnapshot.getValue(User.class);
-//                    allUsers.add(user);
+                    User user = postSnapshot.getValue(User.class);
+                    allUsers.add(user);
                 }
             }
 
@@ -58,12 +57,7 @@ public class SearchActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-
         getAllUsers();
-
-        for(User u : allUsers){
-            System.out.println("user after assignment " + u.getEmail());
-        }
 
         result = (TextView) findViewById(R.id.search_result);
         initiateChat = (Button) findViewById(R.id.initiate_button);
@@ -80,8 +74,7 @@ public class SearchActivity extends AbstractActivity {
                 // Get the ID of the sender and receiver.
                 SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
                 String senderID = settings.getString("CURRENT_USER", null);
-                String receiverID = null;
-
+                String receiverID = wantedUser.getUid();
 
                 // Create a introduction message.
                 Message firstMessage = new Message();
@@ -104,7 +97,8 @@ public class SearchActivity extends AbstractActivity {
 
                 // Now go to the chat screen.
                 Intent toChat = new Intent(SearchActivity.this, ChatActivity.class);
-                toChat.putExtra(ChatActivity.CONVERSATION_REF, DBConnector.getPathToMessages(senderID, receiverID));
+                toChat.putExtra(ChatActivity.SENDER_ID, senderID);
+                toChat.putExtra(ChatActivity.RECEIVER_ID, receiverID);
                 startActivity(toChat);
 
             }

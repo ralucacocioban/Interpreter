@@ -101,7 +101,7 @@ public class ChatActivity extends AbstractActivity {
         newMessage.setSenderID(currentUser);
 
         // TODO - set originalLanguage of the message;
-        
+
         conversationHereRef.push().setValue(newMessage);
         conversationOtherRef.push().setValue(newMessage);
 
