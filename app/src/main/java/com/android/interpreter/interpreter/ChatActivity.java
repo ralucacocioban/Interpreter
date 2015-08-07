@@ -207,9 +207,9 @@ public class ChatActivity extends AbstractActivity {
 
 
                             String targetlanguage = current_user.getReceivingLanguage();
-                            // DO YOUR MAGIC
 
-                            String translatedText = null;
+                            String translatedText = translator.translate(messages.get(position).getMessage(), originallanguage, targetlanguage);
+                            ;
 
                             showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, translatedText);
                             startActivity(showDetails);
@@ -237,9 +237,11 @@ public class ChatActivity extends AbstractActivity {
             }
             else {
                 String targetlanguage = current_user.getReceivingLanguage();
-                // DO YOUR MAGIC
 
-                holder.content.setText("" /* RESULT */);
+
+                holder.content.setText(translator.translate(messages.get(position).getMessage(),
+                        messages.get(position).getOriginalLanguage(), targetlanguage)
+                );
             }
             
             holder.date.setText(df.format(current.getDate()));          // more info on df : top of the class

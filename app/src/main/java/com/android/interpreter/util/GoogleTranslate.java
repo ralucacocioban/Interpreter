@@ -25,7 +25,7 @@ public class GoogleTranslate {
     }
 
 
-    String translate(String text, String from, String to) {
+    public String translate(String text, String from, String to) {
         StringBuilder result = new StringBuilder();
         try {
             String encodedText = URLEncoder.encode(text, "UTF-8");
