@@ -1,5 +1,7 @@
 package com.android.interpreter;
 
+import java.util.HashMap;
+
 /**
  * Created by demouser on 8/6/15.
  */
@@ -17,4 +19,13 @@ public class Config {
 
     public static final String SENT_MESSAGE = "message";
     public static final String SENDER_USER_NAME = "senderName";
+
+    public static final HashMap<String, String> langCodes = new HashMap<String, String>() {{
+        put("English", "en");
+        put("Russian", "rus");
+        put("Ukrainian", "uk");
+        put("Polish", "pl");
+        put("Dutch", "nl");
+        put("Romanian", "ro");
+    }};
 }
