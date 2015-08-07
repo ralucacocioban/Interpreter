@@ -46,16 +46,15 @@ public class ConversationsActivity extends AbstractActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
-
                 System.out.println("There are " + snapshot.getChildrenCount() + " messages");
                 System.out.println("on data changeee");
 
-//                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-//                    Conversation conversation = postSnapshot.getValue(Conversation.class);
-//                    conversations.add(conversation);
-//                    System.out.println(conversation.getReceivingLanguage()+ "     this is the receiving language  ");
-//                }
-//                mAdapter.notifyDataSetChanged();
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Conversation conversation = postSnapshot.getValue(Conversation.class);
+                    conversations.add(conversation);
+                    System.out.println(conversation.getReceivingLanguage()+ "     this is the receiving language  ");
+                }
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -166,7 +165,6 @@ public class ConversationsActivity extends AbstractActivity {
                 holder.last_message.setText("some message here");
                 holder.date.setText("02-10-2015");
                 holder.profile_img.setImageResource(R.drawable.no_user);
-
             }
 
             return view;
