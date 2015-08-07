@@ -3,6 +3,7 @@ package com.android.interpreter.interpreter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.firebase.client.ValueEventListener;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SearchActivity extends AbstractActivity {
 
@@ -81,7 +83,9 @@ public class SearchActivity extends AbstractActivity {
                 firstMessage.setMessage("Hello, I want to chat with you!");
                 firstMessage.setOriginalLanguage("en");
                 firstMessage.setSenderID(senderID);
-                firstMessage.getDate();
+                firstMessage.setDate(new Date());
+
+                System.out.println(firstMessage.getDate().toString());
 
                 // We need to add the conversations (twice)
                 Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
@@ -104,18 +108,22 @@ public class SearchActivity extends AbstractActivity {
             }
         });
 
-        // TODO - fill the arrayList with all the users.
-
 
         Button searchButton = (Button) findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                wantedUser = null;
                 String adress = String.valueOf(((EditText) findViewById(R.id.search_text)).getText());
 
-                if (allUsers.contains(adress)) {     // Yes, he user exists.
-                    // TODO - enhance information of the found user.
+                for(User user : allUsers) {
+                    if(user.getEmail().equals(adress)) {
+                        wantedUser = user;
+                    }
+                }
+
+                if (wantedUser != null) {     // Yes, he user exists.
                     result.setText("Yes, we found someone, do you want to initiate chat?");
                     initiateChat.setVisibility(View.VISIBLE);
                     initiateChat.setClickable(true);
