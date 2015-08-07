@@ -3,15 +3,25 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="#9E9E9E"
         android:layout_alignParentTop="true"
         >
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo"
+            android:src="@drawable/back"
+            android:layout_marginLeft="-5dp"
             android:id="@+id/logo"/>
+
+        <!--<ImageButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:icon="@drawable/ic_settings_white_24dp"-->
+            <!--android:title="@string/action_settings"-->
+            <!--android:orderInCategory="100"-->
+            <!--android:id="@+id/action_settings"/>-->
+
     </android.support.v7.widget.Toolbar>
 
 </merge>

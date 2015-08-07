@@ -14,7 +14,6 @@
         style="@style/Base.TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E0F2F1"
         android:orientation="vertical">
 
         <include
@@ -45,7 +44,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:text="Your nickname:"
-                android:textColor="#009688"
+                android:textColor="#212121"
                 android:textSize="30sp" />
 
             <EditText
@@ -64,7 +63,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/nickNameEdit"
                 android:text="Sending language:"
-                android:textColor="#009688"
+                android:textColor="#212121"
                 android:textSize="20sp" />
 
             <Spinner
@@ -85,7 +84,7 @@
                 android:layout_height="30dp"
                 android:layout_below="@id/sendingLanguageDropDown"
                 android:text="Receiving language:"
-                android:textColor="#009688"
+                android:textColor="#212121"
                 android:textSize="20sp" />
 
             <Spinner

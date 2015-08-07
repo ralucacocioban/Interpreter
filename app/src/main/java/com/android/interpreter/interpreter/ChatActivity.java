@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class ChatActivity extends AbstractActivity {
 
     // Parts needed for the UI, where all the messages are stored in 'messages'.
     private ListView messageList;
+    ImageButton imageButton;
     private MessageListAdapter messageListAdapter;
     private ArrayList<Message> messages = new ArrayList<>();
 
@@ -82,6 +84,22 @@ public class ChatActivity extends AbstractActivity {
         messageList = (ListView) findViewById(R.id.messages);
         messageListAdapter = new MessageListAdapter();
         messageList.setAdapter(messageListAdapter);
+
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+//        public boolean onKeyDown(int keyCode, KeyEvent event) {
+//            if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                // your code
+//                return true;
+//            }
+//
+//            return super.onKeyDown(keyCode, event);
+//        }
 
         // Setting up the correct root reference, giving a Conversation.
         Firebase.setAndroidContext(this);
