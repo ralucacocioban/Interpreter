@@ -7,13 +7,11 @@ public class Conversation {
     private String senderId;
     private String receiverId;
 
-
     public Conversation(String receivingLanguage, String sendingLanguage, String senderId, String receiverId) {
         this.receivingLanguage = receivingLanguage;
         this.sendingLanguage = sendingLanguage;
         this.senderId = senderId;
-        
-
+        this.receiverId = receiverId;
     }
 
     public Conversation() {
@@ -35,4 +33,19 @@ public class Conversation {
         this.sendingLanguage = sendingLanguage;
     }
 
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public String getReceiverId() {
+        return receiverId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
+    }
 }
