@@ -60,7 +60,7 @@ public class ChatActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        
 
         SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
         final String currentUser = settings.getString("CURRENT_USER", null);
@@ -89,6 +89,7 @@ public class ChatActivity extends AbstractActivity {
         receiverID = getIntent().getStringExtra(RECEIVER_ID);
         conversationHereRef = new Firebase (DBConnector.getPathToMessages(senderID, receiverID));
         conversationOtherRef = new Firebase (DBConnector.getPathToMessages(receiverID, senderID));
+
 
         conversationHereRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -171,7 +172,7 @@ public class ChatActivity extends AbstractActivity {
                 // final String currentUser = settings.getString("CURRENT_USER", null);
 
                 // When the current user is the sender of this message, the message is placed right.
-                if (current_user.getUid().equals(messages.get(position).getSenderID())) {
+                if (senderID.equals(messages.get(position).getSenderID())) {
                     view = inflater.inflate(R.layout.message_outgoing, null);
                 }
                 // Otherwise, when the current user is the receiver, the message is placed left
@@ -214,7 +215,7 @@ public class ChatActivity extends AbstractActivity {
 
             Message current = messages.get(position);
 
-            if (current_user.getUid().equals(messages.get(position).getSenderID())) {           // NO TRANSLATION
+            if (senderID.equals(messages.get(position).getSenderID())) {           // NO TRANSLATION
                 holder.content.setText(current.getMessage());
             }
             else {

@@ -92,6 +92,7 @@ public class ConversationsActivity extends AbstractActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("FACKING DUCKS");
                 System.out.println(snapshot.getValue());
 
                 current_user = snapshot.getValue(User.class);
