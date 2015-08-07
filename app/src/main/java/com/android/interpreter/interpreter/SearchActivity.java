@@ -28,6 +28,7 @@ public class SearchActivity extends AbstractActivity {
     private Button initiateChat;
     ArrayList<User> allUsers = new ArrayList<>();
     private User wantedUser;
+    private User currentuser;
 
     private void getAllUsers() {
 
@@ -94,8 +95,8 @@ public class SearchActivity extends AbstractActivity {
                 // We need to add the conversations (twice)
                 Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
                 Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
-                //userRef.child("sendingLanguage");
-                //Conversation conv = new Conversation();
+
+                Conversation conv = new Conversation();
                 conversationOfRef.push().setValue(receiverID);
 
 

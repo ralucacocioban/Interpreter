@@ -88,10 +88,14 @@ public class ConversationsActivity extends AbstractActivity {
                 System.out.println(snapshot.getValue());
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    System.out.println("test");
+                    System.out.println("test");
+                    System.out.println("test");
                     String key = snapshot.getKey();
                     String field = postSnapshot.getValue().toString();
                     System.out.println(field + "     this is the receiving language  " + "   key:  " + key);
                 }
+
                 mAdapter.notifyDataSetChanged();
             }
 
