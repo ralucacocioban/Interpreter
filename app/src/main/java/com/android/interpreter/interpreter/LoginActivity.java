@@ -94,9 +94,18 @@ public class LoginActivity extends ActionBarActivity {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("CURRENT_USER", result.get("uid").toString());
 
-                    System.out.println("commited the message");
+                    Firebase userRef = new Firebase(DBConnector.getPathToUsers());
+                    Firebase ref = new Firebase(Config.mainFireBaseRef);
 
-                    // Commit the edits!
+                    AuthData authData = ref.getAuth();
+                    if (authData != null) {
+                        System.out.println(authData);
+                        System.out.println(authData.getAuth().get("uid"));
+                        System.out.println(authData.getProviderData().get("email"));
+                        User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString());
+                        userRef.push().setValue(currentUser);
+                    }
+
                     editor.commit();
                     launchConfigPage();
                 }

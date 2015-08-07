@@ -1,5 +1,6 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,8 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
+import com.android.interpreter.util.UserDetails;
+import com.firebase.client.Firebase;
 
 public class ConfigurationActivity extends ActionBarActivity {
     TextView nickName;
@@ -32,7 +36,7 @@ public class ConfigurationActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-        String currentUser = settings.getString("CURRENT_USER", null);
+        final String currentUser = settings.getString("CURRENT_USER", null);
 
         System.out.println("current user in Configuration Activity  " + currentUser);
 
@@ -65,7 +69,7 @@ public class ConfigurationActivity extends ActionBarActivity {
             }
         });
 
-        ArrayAdapter<String> receivingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.receiveLanguageArray);
+        final ArrayAdapter<String> receivingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.receiveLanguageArray);
         receivingLanguageDropDown.setAdapter(receivingAdapter);
 //        int receivedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
 //        receivingLanguageDropDown.setSelection(receivedLanguagePosition, false);
@@ -87,14 +91,25 @@ public class ConfigurationActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 String nickName = nickNameEdit.getText().toString();
+                UserDetails details;
+
+                System.out.println("receving language");
+                System.out.println(receivingL);
 
                 if(nickName != null){
-//                    UserDetails details = new UserDetails(sendingL, receivingL, "", nickName);
-//
-//                    Firebase firebase = new Firebase(DBConnector.getPathToUser())
-//                    Intent convIntent = new Intent(this, ConversationsActivity.class);
-//                    startActivity(convIntent);
+                    details = new UserDetails(nickName, sendingL, receivingL, Config.BOSS_API_KEY);
                 }
+                else{
+                    details = new UserDetails("", sendingL, receivingL, Config.BOSS_API_KEY);
+                }
+
+                if(currentUser != null){
+                    Firebase firebase = new Firebase(DBConnector.getPathToUser(currentUser));
+                    firebase.push().setValue(details);
+                }
+
+                Intent convIntent = new Intent(ConfigurationActivity.this, ConversationsActivity.class);
+                startActivity(convIntent);
             }
         });
     }

@@ -7,8 +7,12 @@ import com.android.interpreter.Config;
  */
 public class DBConnector {
 
+    public static String getPathToUsers(){
+        return Config.usersFirebasePath;
+    }
+
     public static String getPathToUser(String userId) {
-        String path = String.format("%s/%s", Config.usersFirebasePath);
+        String path = String.format("%s/%s", Config.usersFirebasePath, userId);
         return path;
     }
 

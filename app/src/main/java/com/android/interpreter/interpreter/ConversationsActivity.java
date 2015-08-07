@@ -32,32 +32,25 @@ public class ConversationsActivity extends AppCompatActivity {
     private ListView mList;
     private MyAdapter mAdapter;
     private List<Conversation> conversations = new ArrayList<>();
+    private List<User> all_users = new ArrayList<>();
 
-    private void pushUser() {
+    private void getAllUsers(){
 
-        Firebase userRef = new Firebase(Config.usersFirebasePath);
-        Firebase ref = new Firebase(Config.mainFireBaseRef);
+        Firebase usersRef = new Firebase(DBConnector.getPathToUsers());
 
-        AuthData authData = ref.getAuth();
-        if (authData != null) {
-            System.out.println(authData);
-            System.out.println(authData.getAuth().get("uid"));
-            System.out.println(authData.getProviderData().get("email"));
-            User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString());
-            userRef.push().setValue(currentUser);
-        }
-
-        userRef.addValueEventListener(new ValueEventListener() {
+        usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
 
-                System.out.println("There are " + snapshot.getChildrenCount() + " users logged in");
-                System.out.println("on data changeee");
+                System.out.println(snapshot.getValue());
+                System.out.println("There are " + snapshot.getChildrenCount() + " users");
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    System.out.println(postSnapshot);
+                    User user = postSnapshot.getValue(User.class);
+                    all_users.add(user);
                 }
+
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -77,6 +70,12 @@ public class ConversationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversations);
 
+        getAllUsers();
+
+        for(User u : all_users){
+            System.out.println("all users  " + u.getEmail());
+        }
+
         mList = (ListView) findViewById(R.id.conversationsList);
         mAdapter = new MyAdapter();
         mList.setAdapter(mAdapter);
@@ -84,9 +83,6 @@ public class ConversationsActivity extends AppCompatActivity {
         Button btn = (Button) findViewById(R.id.addConversation);
 
         handleConversations();
-
-        pushUser();
-
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
