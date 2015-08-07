@@ -11,11 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
 import com.android.interpreter.util.UserDetails;
 import com.firebase.client.Firebase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigurationActivity extends AppCompatActivity {
     TextView nickName;
@@ -52,7 +54,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         receivingLanguageDropDown = (Spinner) findViewById(R.id.receivingLanguageDropDown);
         continueButton = (Button) findViewById(R.id.continueButton);
 
-        ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.sendLanguageArray);
+        final ArrayAdapter<String> sendingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Config.sendLanguageArray);
         sendingLanguageDropDown.setAdapter(sendingAdapter);
         //int selectedLanguagePosition = helper.getDropdownLanguagePosition(currentUser.getSendingLanguage(), Config.sendLanguageArray);
         //sendingLanguageDropDown.setSelection(selectedLanguagePosition, false);
@@ -97,15 +99,27 @@ public class ConfigurationActivity extends AppCompatActivity {
                 System.out.println(receivingL);
 
                 if(nickName != null){
-                    details = new UserDetails(nickName, sendingL, receivingL, Config.BOSS_API_KEY);
+                    //details = new UserDetails(nickName, sendingL, receivingL, Config.BOSS_API_KEY);
+                    Map<String, Object> nickname = new HashMap<String, Object>();
+                    Map<String, Object> sendingLanguage = new HashMap<String, Object>();
+                    Map<String, Object> receivingLanguage = new HashMap<String, Object>();
+                    nickname.put("nickname", nickName);
+
+//
+//
+//                    userRef.updateChildren(nickname);
+//                    userRef.updateChildren(nickname);
+//                    userRef.updateChildren(nickname);
                 }
                 else{
-                    details = new UserDetails("", sendingL, receivingL, Config.BOSS_API_KEY);
+                    //details = new UserDetails("", sendingL, receivingL, Config.BOSS_API_KEY);
                 }
 
                 if(currentUser != null){
-                    Firebase firebase = new Firebase(DBConnector.getPathToUser(currentUser));
-                    firebase.push().setValue(details);
+                    Firebase firebase = new Firebase(DBConnector.getPathToUsers());
+
+                    Firebase userRef = firebase.child(currentUser);
+
                 }
 
                 Intent convIntent = new Intent(ConfigurationActivity.this, ConversationsActivity.class);

@@ -1,5 +1,6 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -32,49 +33,13 @@ public class ConversationsActivity extends AbstractActivity {
     private ListView mList;
     private MyAdapter mAdapter;
     private List<Conversation> conversations = new ArrayList<>();
-    private List<User> all_users = new ArrayList<>();
 
-    private void getAllUsers(){
-
-        Firebase usersRef = new Firebase(DBConnector.getPathToUsers());
-
-        usersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                System.out.println(snapshot.getValue());
-                System.out.println("There are " + snapshot.getChildrenCount() + " users");
-
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    User user = postSnapshot.getValue(User.class);
-                    all_users.add(user);
-                }
-
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
-    }
-
-    private void handleConversations() {
-
-    }
-
+    private void handleConversations() {}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversations);
-
-        getAllUsers();
-
-        for(User u : all_users){
-            System.out.println("all users  " + u.getEmail());
-        }
 
         mList = (ListView) findViewById(R.id.conversationsList);
         mAdapter = new MyAdapter();
@@ -90,8 +55,8 @@ public class ConversationsActivity extends AbstractActivity {
                 System.out.println("heyyyy");
                 System.out.println("heyyyy");
 
-                /// TODO: 06/08/2015
-                // launch activity for searching other users
+                Intent intent = new Intent(ConversationsActivity.this, SearchActivity.class);
+                startActivity(intent);
             }
         });
 

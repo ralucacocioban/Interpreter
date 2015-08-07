@@ -5,7 +5,7 @@ package com.android.interpreter;
  */
 public class Config {
     public static final String mainFireBaseRef = "https://flickering-heat-70.firebaseio.com/interpreter/";
-    public static final String usersFirebasePath = "https://flickering-heat-70.firebaseio.com/interpreter/user";
+    public static final String usersFirebasePath = "https://flickering-heat-70.firebaseio.com/interpreter/user/";
 
     public static final String PREFS_NAME = "MyPrefsFile";
     public static final String BOSS_API_KEY = "AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY";

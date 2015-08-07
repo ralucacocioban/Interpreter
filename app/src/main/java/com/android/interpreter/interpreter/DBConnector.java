@@ -16,19 +16,14 @@ public class DBConnector {
         return path;
     }
 
-    public static String getPathToConversations(String userId) {
-
-        String path = String.format("%s/%s/conversations", Config.usersFirebasePath, userId);
-        return path;
-    }
-
-    public static String getPathToConv(String senderId, String receiverId) {
-        String path = String.format("%s/%s/conversations/%s", Config.usersFirebasePath, senderId, receiverId);
+    public static String getPathToConversations(String senderId, String receiverId) {
+        String path = String.format("%s/conversations/%s/%s", Config.mainFireBaseRef, senderId, receiverId);
         return path;
     }
 
     public static String getPathToMessages(String senderId, String receiverId) {
-        String path = String.format("%s/%s/conversations/%s/messages", Config.usersFirebasePath, senderId, receiverId);
+        String path = String.format("%s/conversations/%s/%s/messages", Config.mainFireBaseRef, senderId, receiverId);
         return path;
     }
+
 }
