@@ -1,6 +1,7 @@
 package com.android.interpreter.pushnotifications;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -26,37 +27,38 @@ public class GSMreceiver extends BroadcastReceiver {
     public final void onReceive(Context context, Intent intent) {
         String msg = intent.getExtras().getString(Config.SENT_MESSAGE);
         String senderName = intent.getExtras().getString(Config.SENDER_USER_NAME);
+        String url = intent.getExtras().getString(Config.SENDER_USER_PHOTO);
+        String msgId = intent.getExtras().getString(Config.MESSAGE_ID);
 
         Log.d(TAG, intent.toString());
 
-//        NotificationCompat.Builder mBuilder =
-//                new NotificationCompat.Builder(this)
-//                        .setSmallIcon(R.drawable.notification_icon)
-//                        .setContentTitle("My notification")
-//                        .setContentText("Hello World!");
-//// Creates an explicit intent for an Activity in your app
-//        Intent resultIntent = new Intent(GSMreceiver.this, ChatActivity.class);
-//
-//// The stack builder object will contain an artificial back stack for the
-//// started Activity.
-//// This ensures that navigating backward from the Activity leads out of
-//// your application to the Home screen.
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//// Adds the back stack for the Intent (but not the Intent itself)
-//        stackBuilder.addParentStack(ChatActivity.class);
-//// Adds the Intent that starts the Activity to the top of the stack
-//        stackBuilder.addNextIntent(resultIntent);
-//        PendingIntent resultPendingIntent =
-//                stackBuilder.getPendingIntent(
-//                        0,
-//                        PendingIntent.FLAG_UPDATE_CURRENT
-//                );
-//        mBuilder.setContentIntent(resultPendingIntent);
-//        NotificationManager mNotificationManager =
-//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//// mId allows you to update the notification later on.
-//        mNotificationManager.notify(mId, mBuilder.build());
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        //TODO: use user icon or notification_icon
+                        .setSmallIcon(R.drawable.no_user)//notification_icon)
+                        .setContentTitle(senderName)
+                        .setContentText(msg);
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(context, ChatActivity.class);
+        //resultIntent.putExtra("ChatActivity", "ChatActivity");
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, resultIntent, 0);
 
+        NotificationManager nm =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        nm.notify(Integer.parseInt(msgId), mBuilder.build());
+
+/*
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification(R.drawable.no_user, "Message", System.currentTimeMillis());
+        Intent myIntent = new Intent(context, ChatActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, myIntent, 0);
+        notification.setLatestEventInfo(context, "Notif title", "Notif text", pIntent);
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.vibrate = true;
+        //TODO:
+        nm.notify(1, notification);
+*/
     }
 //    @Override
 //    public void onMessageReceived(String from, Bundle data) {

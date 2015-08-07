@@ -37,6 +37,8 @@ public class PushNotifications {
                     .delayWhileIdle(true)
                     .addData(Config.SENT_MESSAGE, "Your message send")
                     .addData(Config.SENDER_USER_NAME, "Sender name")
+                    .addData(Config.SENDER_USER_PHOTO, "Some url")
+                    .addData(Config.MESSAGE_ID, "1")
                     .build();
 
             System.out.println("####message: " + message);

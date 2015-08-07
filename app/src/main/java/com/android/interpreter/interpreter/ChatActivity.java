@@ -3,10 +3,7 @@ package com.android.interpreter.interpreter;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
 
 import com.android.interpreter.pushnotifications.PushNotifications;
 import com.android.interpreter.util.Message;
@@ -66,6 +62,7 @@ public class ChatActivity extends AbstractActivity {
                     protected Void doInBackground(Void... params) {
                         String deviceId = pushNotifications.getDeviceId(ChatActivity.this);
                         System.out.println("#####deviceId: " + deviceId);
+
                         pushNotifications.sendMessage(deviceId);
                         return null;
                     }

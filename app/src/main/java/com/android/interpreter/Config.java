@@ -19,6 +19,8 @@ public class Config {
 
     public static final String SENT_MESSAGE = "message";
     public static final String SENDER_USER_NAME = "senderName";
+    public static final String SENDER_USER_PHOTO = "senderPhoto";
+    public static final String MESSAGE_ID = "messageId";
 
     public static final HashMap<String, String> langCodes = new HashMap<String, String>() {{
         put("English", "en");
