@@ -55,9 +55,6 @@ public class ConversationsActivity extends AbstractActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("heyyyy");
-                System.out.println("heyyyy");
-
                 Intent intent = new Intent(ConversationsActivity.this, SearchActivity.class);
                 startActivity(intent);
             }

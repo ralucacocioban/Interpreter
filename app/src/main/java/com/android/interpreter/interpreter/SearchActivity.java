@@ -1,16 +1,21 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.android.interpreter.Config;
+import com.android.interpreter.interpreter.R;
+import com.android.interpreter.util.Message;
 import com.android.interpreter.util.User;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
 
 import java.util.ArrayList;
 
@@ -19,10 +24,11 @@ public class SearchActivity extends AbstractActivity {
     private TextView result;
     private Button initiateChat;
     ArrayList<User> allUsers = new ArrayList<>();
+    private User wantedUser;
 
     private void getAllUsers() {
 
-        Firebase usersRef = new Firebase(DBConnector.getPathToUsers());
+        Firebase usersRef = new Firebase(DBConnector.getPathToAllUsers());
 
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -32,10 +38,9 @@ public class SearchActivity extends AbstractActivity {
                 System.out.println("There are " + snapshot.getChildrenCount() + " users");
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
                     System.out.println("user here  " + postSnapshot.getValue().toString());
-//                    User user = postSnapshot.getValue(User.class);
-//                    allUsers.add(user);
+                    User user = postSnapshot.getValue(User.class);
+                    allUsers.add(user);
                 }
             }
 
@@ -52,13 +57,7 @@ public class SearchActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-
         getAllUsers();
-
-        for(User u : allUsers){
-            System.out.println("user after assignment " + u.getEmail());
-        }
-
 
         result = (TextView) findViewById(R.id.search_result);
         initiateChat = (Button) findViewById(R.id.initiate_button);
@@ -71,7 +70,37 @@ public class SearchActivity extends AbstractActivity {
         initiateChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // INITIATE NEW CHAT AND GO TO CHAT VIEW.
+
+                // Get the ID of the sender and receiver.
+                SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                String senderID = settings.getString("CURRENT_USER", null);
+                String receiverID = wantedUser.getUid();
+
+                // Create a introduction message.
+                Message firstMessage = new Message();
+                firstMessage.setMessage("Hello, I want to chat with you!");
+                firstMessage.setOriginalLanguage("en");
+                firstMessage.setSenderID(senderID);
+                firstMessage.getDate();
+
+                // We need to add the conversations (twice)
+                Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
+                conversationOfRef.push().setValue(receiverID);
+                conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(receiverID));
+                conversationOfRef.push().setValue(senderID);
+
+                // Now we add the first message to this conversation.
+                Firebase chatRef = new Firebase(DBConnector.getPathToMessages(senderID, receiverID));
+                chatRef.push().setValue(firstMessage);
+                chatRef = new Firebase(DBConnector.getPathToMessages(receiverID, senderID));
+                chatRef.push().setValue(firstMessage);
+
+                // Now go to the chat screen.
+                Intent toChat = new Intent(SearchActivity.this, ChatActivity.class);
+                toChat.putExtra(ChatActivity.SENDER_ID, senderID);
+                toChat.putExtra(ChatActivity.RECEIVER_ID, receiverID);
+                startActivity(toChat);
+
             }
         });
 

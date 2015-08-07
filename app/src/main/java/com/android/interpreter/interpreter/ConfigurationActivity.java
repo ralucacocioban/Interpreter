@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
-import com.android.interpreter.util.UserDetails;
 import com.firebase.client.Firebase;
 
 import java.util.HashMap;
@@ -99,13 +98,15 @@ public class ConfigurationActivity extends AppCompatActivity {
                 System.out.println(receivingL);
 
                 if (currentUser != null) {
-                    Firebase firebase = new Firebase(DBConnector.getPathToUsers());
-                    Firebase userRef = firebase.child(currentUser);
+                    Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+                    //Firebase userRef = firebase.child(currentUser);
 
                     if (nickName != null) {
                         Map<String, Object> nickname = new HashMap<String, Object>();
                         nickname.put("nickname", nickName);
-                        userRef.updateChildren(nickname);
+                        System.out.println("####nickNameEdit.getText().toString() " + nickNameEdit.getText().toString());
+                        System.out.println("####userRef " + userRef);
+                        userRef.setValue("nickName", nickNameEdit.getText().toString());
 
                     } else {
                         Map<String, Object> sendingLanguage = new HashMap<String, Object>();
