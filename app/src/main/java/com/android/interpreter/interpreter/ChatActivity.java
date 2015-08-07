@@ -125,22 +125,10 @@ public class ChatActivity extends AbstractActivity {
         newMessage.setMessage(String.valueOf(et.getText()));
         newMessage.setDate(new Date());
 
-        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-        final String currentUserID = settings.getString("CURRENT_USER", null);
-        newMessage.setSenderID(currentUserID);
-
-        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUserID));
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                newMessage.setOriginalLanguage((String) dataSnapshot.child("sendingLanguage").getValue());
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        //SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+        //final String currentUserID = settings.getString("CURRENT_USER", null);
+        newMessage.setSenderID(current_user.getUid());
+        newMessage.setOriginalLanguage(current_user.getSendingLanguage());
 
         conversationHereRef.push().setValue(newMessage);
         conversationOtherRef.push().setValue(newMessage);

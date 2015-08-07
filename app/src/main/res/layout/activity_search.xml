@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="6"
-            android:text="Unfortunately, we did not find a contact using this e-mail"
+            android:textSize="30sp"
             android:textAlignment="center"
             />
 
