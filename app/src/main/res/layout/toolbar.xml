@@ -3,8 +3,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#009688"
+        android:layout_height="100dp"
+        android:background="#9E9E9E"
         android:layout_alignParentTop="true"
         >
         <ImageButton
