@@ -37,6 +37,8 @@
             android:id="@+id/conversationsList"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_below="@id/addConversation"
             android:layout_weight="0.9"
             android:cacheColorHint="#16a085"

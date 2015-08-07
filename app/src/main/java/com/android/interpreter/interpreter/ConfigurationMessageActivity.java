@@ -1,5 +1,6 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.android.interpreter.Config;
@@ -19,6 +21,7 @@ public class ConfigurationMessageActivity extends AbstractActivity {
     Spinner sendingLanguageDropDown;
     TextView receivingLanguage;
     Spinner receivingLanguageDropDown;
+    ImageButton imageButton;
     Button saveButton;
     Helper helper = new Helper();
 
@@ -26,6 +29,16 @@ public class ConfigurationMessageActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration_message);
+
+
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConfigurationMessageActivity.this, ConversationsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         text = (TextView)findViewById(R.id.text);
         sendingLanguage = (TextView)findViewById(R.id.sendingLanguage);

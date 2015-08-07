@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ import java.util.Random;
  * Created by ralucamelon on 06/08/2015.
  */
 public class ConversationsActivity extends AbstractActivity {
-
+    ImageButton imageButton;
     private ListView mList;
     private MyAdapter mAdapter;
     private List<Conversation> conversations = new ArrayList<>();
@@ -130,6 +131,9 @@ public class ConversationsActivity extends AbstractActivity {
                 startActivity(intent);
             }
         });
+
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setVisibility(View.INVISIBLE);
 
         mAdapter = new MyAdapter();
         mList.setAdapter(mAdapter);

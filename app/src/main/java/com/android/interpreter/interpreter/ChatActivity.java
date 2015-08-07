@@ -62,6 +62,15 @@ public class ChatActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        imageButton = (ImageButton)findViewById(R.id.logo);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatActivity.this, ConversationsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Firebase.setAndroidContext(this);
 
         SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
@@ -209,7 +218,7 @@ public class ChatActivity extends AbstractActivity {
 
                             String targetlanguage = current_user.getReceivingLanguage();
 
-                            new createTranslator().execute();
+//                            new createTranslator().execute();
                             String translatedText = translator.translate(messages.get(position).getMessage(), Config.getLangCode(originallanguage), Config.getLangCode(targetlanguage));
 
 
@@ -256,29 +265,29 @@ public class ChatActivity extends AbstractActivity {
         }
     }
 
-    private class createTranslator extends AsyncTask<Void, Void, String> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            try {
-//                params(0);
-//                params(1);
-//                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
-//                String result = translator.translate();
+//    private class createTranslator extends AsyncTask<Void, Void, String> {
 //
+//        @Override
+//        protected Void doInBackground(Void... params) {
 //
-//                return result;
-                Thread.sleep(2000);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-
-    }
+//            try {
+////                params(0);
+////                params(1);
+////                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
+////                String result = translator.translate();
+////
+////
+////                return result;
+//                Thread.sleep(2000);
+//            } catch (Exception e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            return null;
+//
+//        }
+//
+//    }
 
 
 }
