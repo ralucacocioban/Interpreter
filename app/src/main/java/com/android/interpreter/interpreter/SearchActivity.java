@@ -73,10 +73,7 @@ public class SearchActivity extends AbstractActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
-
                 current_user = snapshot.getValue(User.class);
-// "email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
-//                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue(String.class));
             }
 
             @Override
@@ -106,17 +103,12 @@ public class SearchActivity extends AbstractActivity {
                 // Create a introduction message.
                 Message firstMessage = new Message();
                 firstMessage.setMessage("Hello, I want to chat with you!");
-                firstMessage.setOriginalLanguage("en");
+                firstMessage.setOriginalLanguage("English");
                 firstMessage.setSenderID(senderID);
                 firstMessage.setDate(new Date());
 
                 // We need to add the conversations (twice)
                 Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
-
-                System.out.println("in search activirty");
-                System.out.println("in search activirty");
-                System.out.println("in search activirty");
-                System.out.println("in search activirty");
                 System.out.println(current_user.getReceivingLanguage());
                 System.out.println(current_user.getSendingLanguage());
                 System.out.println(current_user.getNickname());
@@ -124,10 +116,20 @@ public class SearchActivity extends AbstractActivity {
                 Conversation conv = new Conversation(current_user.getReceivingLanguage(), current_user.getSendingLanguage(), current_user.getUid(), senderID);
                 conversationOfRef.push().setValue(conv);
 
-
                 conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(receiverID));
-                Conversation conv2 = new Conversation(current_user.getReceivingLanguage(), current_user.getSendingLanguage(), current_user.getUid(), receiverID);
-                conversationOfRef.push().setValue(conv2);
+
+                if (wantedUser != null) {
+                    System.out.println("in different than null");
+                    System.out.println("in different than null");
+                    System.out.println("in different than null");
+                    System.out.println("in different than null");
+                    System.out.println(wantedUser.getReceivingLanguage());
+                    System.out.println(wantedUser.getSendingLanguage());
+
+                    Conversation conv2 = new Conversation(wantedUser.getReceivingLanguage(), wantedUser.getSendingLanguage(), wantedUser.getUid(), receiverID);
+                    conversationOfRef.push().setValue(conv2);
+                }
+
 
                 // Now we add the first message to this conversation.
                 Firebase chatRef = new Firebase(DBConnector.getPathToMessages(senderID, receiverID));

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,12 +11,9 @@ import android.widget.Toast;
 
 import com.android.interpreter.Config;
 import com.android.interpreter.util.User;
-import com.android.interpreter.util.UserDetails;
 import com.firebase.client.AuthData;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.Map;
 
@@ -39,9 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         loginButton = (Button) findViewById(R.id.login_btn);
         email = (TextView) findViewById(R.id.email_input);
@@ -49,11 +44,10 @@ public class LoginActivity extends AppCompatActivity {
         password2 = (TextView) findViewById(R.id.password2_input);
         registerButton = (Button) findViewById(R.id.register_btn);
         newUserButton = (Button) findViewById(R.id.new_user_btn);
-        cancelButton = (Button)findViewById(R.id.cancel_register_btn);
+        cancelButton = (Button) findViewById(R.id.cancel_register_btn);
         Firebase.setAndroidContext(this);
         rootRef = new Firebase(Config.mainFireBaseRef);
     }
-
 
     public void newUser(View view) {
         password2.setVisibility(View.VISIBLE);
@@ -73,39 +67,30 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "created user!", Toast.LENGTH_LONG).show();
                     System.out.println(result.get("uid"));
 
+                    System.out.println("in login");
+                    System.out.println("in login");
+                    System.out.println("in login");
+                    System.out.println("in login");
+                    System.out.println("in login");
 
                     System.out.println("user before putting to preferences " + result.get("uid").toString());
 
                     Firebase ref = new Firebase(Config.mainFireBaseRef);
 
-                    AuthData authData = ref.getAuth();
-                    if (authData != null) {
+                    SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("CURRENT_USER", result.get("uid").toString());
 
-                        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("CURRENT_USER", authData.getUid());
+                    Firebase userRef = new Firebase(DBConnector.getPathToUser(result.get("uid").toString()));
 
-                        Firebase userRef = new Firebase(DBConnector.getPathToUser(authData.getAuth().get("uid").toString()));
+                    Firebase f = new Firebase(DBConnector.getPathToAllUsers());
 
-                        Firebase f = new Firebase(DBConnector.getPathToAllUsers());
+                    current_user = new User(email.getText().toString(), result.get("uid").toString(), "", "", "", "");
 
-                        System.out.println("in login");
-                        System.out.println("in login");
-                        System.out.println("in login");
-                        System.out.println("in login");
-                        System.out.println("in login");
-                        System.out.println(authData);
-                        System.out.println("email " + authData.getProviderData().get("email").toString());
+                    f.push().setValue(current_user);
+                    userRef.setValue(current_user);
 
-
-                        System.out.println("uid " + authData.getAuth().get("uid").toString());
-
-                        current_user = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString(), "", "", "", "");
-                        f.push().setValue(current_user);
-                        userRef.setValue(current_user);
-                        editor.commit();
-                    }
-
+                    editor.commit();
                     launchConfigPage();
                 }
 
@@ -151,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    public void cancelRegister(View view){
+    public void cancelRegister(View view) {
         password2.setVisibility(View.GONE);
         loginButton.setVisibility(View.VISIBLE);
         newUserButton.setVisibility(View.VISIBLE);

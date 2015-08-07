@@ -1,84 +1,88 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.android.interpreter.interpreter.LoginActivity"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.interpreter.interpreter.LoginActivity">
 
-    <Button
-        android:id="@+id/login_btn"
-        android:layout_width="wrap_content"
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Sign in"
-        android:layout_centerInParent="true"
-        android:onClick="login"
-        />
+        android:layout_below="@id/toolbar"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/password2_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/login_btn"
-        android:paddingBottom="20dp"
-        android:layout_centerHorizontal="true"
-        android:hint="Re-enter password"
-        android:inputType="textPassword"
-        android:visibility="gone"
-        />
+        <Button
+            android:id="@+id/new_user_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:onClick="newUser"
+            android:text="New user? Register" />
 
-    <EditText
-        android:id="@+id/password_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/password2_input"
-        android:paddingBottom="20dp"
-        android:layout_centerHorizontal="true"
-        android:hint="Enter password"
-        android:inputType="textPassword"
-        />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_below="@id/new_user_btn">
 
-    <EditText
-        android:id="@+id/email_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/password_input"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="20dp"
-        android:hint="Enter email"
-        android:inputType="textEmailAddress"
-        ><requestFocus/></EditText>
+            <EditText
+                android:id="@+id/email_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter email"
+                android:inputType="textEmailAddress"
+                android:paddingBottom="20dp"
+                android:layout_marginTop="20dp">
 
-    <Button
-        android:id="@+id/new_user_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New user? Register"
-        android:layout_alignParentRight="true"
-        android:onClick="newUser"
-        />
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter password"
+                android:inputType="textPassword"
+                android:layout_marginTop="20dp" />
+            <EditText
+                android:id="@+id/password2_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Re-enter password"
+                android:inputType="textPassword"
+                android:visibility="gone"
+                android:layout_marginTop="20dp" />
 
 
-    <Button
-        android:id="@+id/register_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:layout_centerInParent="true"
-        android:onClick="register"
-        android:visibility="gone"
-        />
+            <Button
+                android:id="@+id/register_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="register"
+                android:text="Register"
+                android:visibility="gone"
+                android:layout_marginTop="20dp" />
 
-    <Button
-        android:id="@+id/cancel_register_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:layout_centerInParent="true"
-        android:onClick="cancelRegister"
-        android:layout_below="@id/register_btn"
-        android:visibility="gone"
-        />
+            <Button
+                android:id="@+id/cancel_register_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="cancelRegister"
+                android:text="Cancel"
+                android:visibility="gone"
+                android:layout_marginTop="20dp" />
 
+            <Button
+                android:id="@+id/login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="172dp"
+                android:onClick="login"
+                android:text="Sign in"
+                android:layout_marginTop="20dp" />
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>
