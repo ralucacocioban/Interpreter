@@ -125,6 +125,22 @@ public class LoginActivity extends AppCompatActivity {
                         System.out.println("User ID: " + authData.getUid() + ", Providerdfjhbdfdfjhbdfbjf: " + authData.getProvider());
                         Toast.makeText(getBaseContext(), "Login success!", Toast.LENGTH_LONG).show();
 
+                        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("CURRENT_USER", authData.getUid().toString());
+
+                        Firebase userRef = new Firebase(DBConnector.getPathToUser(authData.getUid().toString()));
+
+                        Firebase f = new Firebase(DBConnector.getPathToAllUsers());
+
+                        current_user = new User(email.getText().toString(), authData.getUid().toString(), "", "", "", "");
+
+                        f.push().setValue(current_user);
+                        userRef.setValue(current_user);
+
+                        editor.commit();
+                        launchConfigPage();
+
                         launchConversations();
                     }
 
