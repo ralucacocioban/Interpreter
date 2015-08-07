@@ -24,7 +24,9 @@
             android:layout_gravity="center_horizontal"
             android:paddingTop="30dp"
             android:text="Type e-mail here"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <LinearLayout
             android:id="@+id/layout"

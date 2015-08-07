@@ -20,6 +20,7 @@
         <item name="android:textSize">17sp</item>
         <item name="android:background">#B2DFDB</item>
         <item name="android:textColorHint">#8080F0</item>
+        <item name="android:height">50dp</item>
     </style>
 
     <style name="App_ButtonStyle" parent="Widget.AppCompat.Button">

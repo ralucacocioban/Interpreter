@@ -40,7 +40,6 @@
     <EditText
         android:id="@+id/new_message"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/sendbutton" />
 </RelativeLayout>
