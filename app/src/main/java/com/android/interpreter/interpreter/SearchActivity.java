@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.android.interpreter.Config;
 import com.android.interpreter.interpreter.R;
+import com.android.interpreter.util.Conversation;
 import com.android.interpreter.util.Message;
 import com.android.interpreter.util.User;
 import com.firebase.client.DataSnapshot;
@@ -61,6 +62,9 @@ public class SearchActivity extends AbstractActivity {
 
         getAllUsers();
 
+        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+        final String currentUser = settings.getString("CURRENT_USER", null);
+
         result = (TextView) findViewById(R.id.search_result);
         initiateChat = (Button) findViewById(R.id.initiate_button);
 
@@ -89,7 +93,12 @@ public class SearchActivity extends AbstractActivity {
 
                 // We need to add the conversations (twice)
                 Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
+                Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+                //userRef.child("sendingLanguage");
+                //Conversation conv = new Conversation();
                 conversationOfRef.push().setValue(receiverID);
+
+
                 conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(receiverID));
                 conversationOfRef.push().setValue(senderID);
 

@@ -31,9 +31,4 @@ public class DBConnector {
         return path;
     }
 
-    public static String getAllConversations(String userId) {
-        String path = String.format("%s/conversations/%s/all", Config.mainFireBaseRef, userId);
-        return path;
-    }
-
 }
