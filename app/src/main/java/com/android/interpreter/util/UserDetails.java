@@ -44,5 +44,13 @@ public class UserDetails {
         this.GCMtoken = GCMtoken;
     }
 
+    public String getReceivingLanguage() {
+        return receivingLanguage;
+    }
+
+    public void setReceivingLanguage(String receivingLanguage) {
+        this.receivingLanguage = receivingLanguage;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -33,44 +34,7 @@ public class ConversationsActivity extends AbstractActivity {
     private MyAdapter mAdapter;
     private List<Conversation> conversations = new ArrayList<>();
 
-    private void pushUser() {
-
-        Firebase userRef = new Firebase(Config.usersFirebasePath);
-        Firebase ref = new Firebase(Config.mainFireBaseRef);
-
-        AuthData authData = ref.getAuth();
-        if (authData != null) {
-            System.out.println(authData);
-            System.out.println(authData.getAuth().get("uid"));
-            System.out.println(authData.getProviderData().get("email"));
-            User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString());
-            userRef.push().setValue(currentUser);
-        }
-
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-
-                System.out.println("There are " + snapshot.getChildrenCount() + " users logged in");
-                System.out.println("on data changeee");
-
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    System.out.println(postSnapshot);
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("The read failed: " + firebaseError.getMessage());
-            }
-        });
-    }
-
-    private void handleConversations() {
-
-    }
-
+    private void handleConversations() {}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +49,11 @@ public class ConversationsActivity extends AbstractActivity {
 
         handleConversations();
 
-        pushUser();
-
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("heyyyy");
-                System.out.println("heyyyy");
-
-                /// TODO: 06/08/2015
-                // launch activity for searching other users
+                Intent intent = new Intent(ConversationsActivity.this, SearchActivity.class);
+                startActivity(intent);
             }
         });
 

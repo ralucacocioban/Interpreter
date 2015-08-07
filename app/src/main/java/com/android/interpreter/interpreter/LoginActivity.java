@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.interpreter.Config;
+import com.android.interpreter.util.User;
+import com.android.interpreter.util.UserDetails;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -71,9 +74,24 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("CURRENT_USER", result.get("uid").toString());
 
-                    System.out.println("commited the message");
 
-                    // Commit the edits!
+                    Firebase ref = new Firebase(Config.mainFireBaseRef);
+
+                    AuthData authData = ref.getAuth();
+                    if (authData != null) {
+
+                        Firebase userRef = new Firebase(DBConnector.getPathToUser(authData.getAuth().get("uid").toString()));
+
+                        System.out.println("aici");
+                        System.out.println();
+                       Log.d("djhdjjd" , authData.getAuth().get("uid").toString());
+                        System.out.println(authData);
+                        System.out.println(authData.getAuth().get("uid"));
+                        System.out.println(authData.getProviderData().get("email"));
+                        User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString(), new UserDetails());
+                        userRef.push().setValue(currentUser);
+                    }
+
                     editor.commit();
                     launchConfigPage();
                 }

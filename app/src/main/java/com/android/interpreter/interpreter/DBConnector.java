@@ -7,24 +7,23 @@ import com.android.interpreter.Config;
  */
 public class DBConnector {
 
+    public static String getPathToUsers(){
+        return Config.usersFirebasePath;
+    }
+
     public static String getPathToUser(String userId) {
-        String path = String.format("%s/%s", Config.usersFirebasePath);
+        String path = String.format("%s/%s", Config.usersFirebasePath, userId);
         return path;
     }
 
-    public static String getPathToConversations(String userId) {
-
-        String path = String.format("%s/%s/conversations", Config.usersFirebasePath, userId);
-        return path;
-    }
-
-    public static String getPathToConv(String senderId, String receiverId) {
-        String path = String.format("%s/%s/conversations/%s", Config.usersFirebasePath, senderId, receiverId);
+    public static String getPathToConversationsOf(String userId) {
+        String path = String.format("%s/conversations/%s/", Config.mainFireBaseRef, userId);
         return path;
     }
 
     public static String getPathToMessages(String senderId, String receiverId) {
-        String path = String.format("%s/%s/conversations/%s/messages", Config.usersFirebasePath, senderId, receiverId);
+        String path = String.format("%s/conversations/%s/%s/messages", Config.mainFireBaseRef, senderId, receiverId);
         return path;
     }
+
 }

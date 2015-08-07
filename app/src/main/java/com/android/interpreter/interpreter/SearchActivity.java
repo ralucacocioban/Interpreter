@@ -1,18 +1,21 @@
 package com.android.interpreter.interpreter;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.android.interpreter.Config;
 import com.android.interpreter.interpreter.R;
 import com.android.interpreter.util.Message;
+import com.android.interpreter.util.User;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 
 import java.util.ArrayList;
 
@@ -20,12 +23,47 @@ public class SearchActivity extends AbstractActivity {
 
     private TextView result;
     private Button initiateChat;
-    ArrayList<String> allUsers = new ArrayList<>();
+    ArrayList<User> allUsers = new ArrayList<>();
+
+    // DOES NOT WORK
+    private void getAllUsers() {
+
+        Firebase usersRef = new Firebase(DBConnector.getPathToUsers());
+
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                System.out.println(snapshot.getValue());
+                System.out.println("There are " + snapshot.getChildrenCount() + " users");
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    System.out.println("user here  " + postSnapshot.getValue().toString());
+//                    User user = postSnapshot.getValue(User.class);
+//                    allUsers.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+
+        getAllUsers();
+
+        for(User u : allUsers){
+            System.out.println("user after assignment " + u.getEmail());
+        }
 
         result = (TextView) findViewById(R.id.search_result);
         initiateChat = (Button) findViewById(R.id.initiate_button);
@@ -38,17 +76,36 @@ public class SearchActivity extends AbstractActivity {
         initiateChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO - INITIATE NEW CHAT AND GO TO CHAT VIEW.
-                // Create a first message.
+
+                // Get the ID of the sender and receiver.
+                SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                String senderID = settings.getString("CURRENT_USER", null);
+                String receiverID = null;
+
+
+                // Create a introduction message.
                 Message firstMessage = new Message();
                 firstMessage.setMessage("Hello, I want to chat with you!");
                 firstMessage.setOriginalLanguage("en");
-                SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-                firstMessage.setSenderID(settings.getString("CURRENT_USER", null));
+                firstMessage.setSenderID(senderID);
                 firstMessage.getDate();
 
-                Firebase f = new Firebase ()
+                // We need to add the conversations (twice)
+                Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
+                conversationOfRef.push().setValue(receiverID);
+                conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(receiverID));
+                conversationOfRef.push().setValue(senderID);
 
+                // Now we add the first message to this conversation.
+                Firebase chatRef = new Firebase(DBConnector.getPathToMessages(senderID, receiverID));
+                chatRef.push().setValue(firstMessage);
+                chatRef = new Firebase(DBConnector.getPathToMessages(receiverID, senderID));
+                chatRef.push().setValue(firstMessage);
+
+                // Now go to the chat screen.
+                Intent toChat = new Intent(SearchActivity.this, ChatActivity.class);
+                toChat.putExtra(ChatActivity.CONVERSATION_REF, DBConnector.getPathToMessages(senderID, receiverID));
+                startActivity(toChat);
 
             }
         });
@@ -68,8 +125,7 @@ public class SearchActivity extends AbstractActivity {
                     result.setText("Yes, we found someone, do you want to initiate chat?");
                     initiateChat.setVisibility(View.VISIBLE);
                     initiateChat.setClickable(true);
-                }
-                else {  // Sorry sorry.
+                } else {  // Sorry sorry.
                     result.setText("We are fairly sorry, try again.");
                 }
             }

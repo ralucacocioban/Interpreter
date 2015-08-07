@@ -32,17 +32,20 @@ import java.util.Date;
  */
 public class ChatActivity extends AbstractActivity {
 
+    public final static String SENDER_ID = "sender";
+    public final static String RECEIVER_ID = "receiver";
+
     // Parts needed for the UI, where all the messages are stored in 'messages'.
     private ListView messageList;
     private MessageListAdapter messageListAdapter;
     private ArrayList<Message> messages = new ArrayList<>();
 
     // This will be the format we will use at the bottom of the message, displaying the date.
-    // TODO - Check whether we want this format
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
     // Reference in Firebase we start.
-    Firebase conversationref;
+    Firebase conversationHereRef;
+    Firebase conversationOtherRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +58,12 @@ public class ChatActivity extends AbstractActivity {
 
         // Setting up the correct root reference, giving a Conversation.
         Firebase.setAndroidContext(this);
-        conversationref = new Firebase("");     // TODO - Place the correct URL here.
+        String senderID = getIntent().getStringExtra(SENDER_ID);
+        String receiverID = getIntent().getStringExtra(RECEIVER_ID);
+        conversationHereRef = new Firebase (DBConnector.getPathToMessages(senderID, receiverID));
+        conversationOtherRef = new Firebase (DBConnector.getPathToMessages(receiverID, senderID));
 
-        conversationref.addValueEventListener(new ValueEventListener() {
+        conversationHereRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
@@ -84,8 +90,6 @@ public class ChatActivity extends AbstractActivity {
 
 
     public void sendMessage(View view) {
-        // We need to make a reference to the database where we are going to store the message
-        Firebase messageRef = conversationref.child("");       // TODO - find correct link
 
         Message newMessage = new Message();
         EditText et = (EditText) findViewById(R.id.new_message);
@@ -97,10 +101,9 @@ public class ChatActivity extends AbstractActivity {
         newMessage.setSenderID(currentUser);
 
         // TODO - set originalLanguage of the message;
-
-        // TODO - Check whether this is ok.
-        // SO, update, we are going to put it in two conversations....
-        messageRef.push().setValue(newMessage);
+        
+        conversationHereRef.push().setValue(newMessage);
+        conversationOtherRef.push().setValue(newMessage);
 
         // Create the sent text from the EditText
         et.setText("");
