@@ -3,45 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/profile_img"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        android:src="@drawable/no_user"
-        />
+    <include layout="@layout/toolbar" />
 
-    <TextView
-        android:id="@+id/receiver"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/profile_img"
-        android:textSize="20sp"
-        android:text="Veronika"
-        android:textStyle="bold" />
+        android:layout_below="@id/toolbar"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/last_message"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/receiver"
-        android:textSize="15dp"
-        android:layout_toRightOf="@id/profile_img"
-        android:text="we forgot eh last dinner" />
+        <ImageView
+            android:id="@+id/profile_img"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/no_user" />
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/receiver"
-        android:textSize="15dp"
-        android:layout_marginTop="5dp"
-        android:text="1-03-2015" />
+        <TextView
+            android:id="@+id/receiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/profile_img"
+            android:text="Veronika"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/last_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/receiver"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/profile_img"
+            android:text="we forgot eh last dinner"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/receiver"
+            android:layout_marginTop="5dp"
+            android:text="1-03-2015"
+            android:textSize="15dp" />
+    </RelativeLayout>
 </RelativeLayout>

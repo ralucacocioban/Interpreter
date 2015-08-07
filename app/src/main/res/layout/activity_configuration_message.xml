@@ -9,63 +9,72 @@
     tools:context="com.android.interpreter.interpreter.ConfigurationMessageActivity">
 
 
-    <TextView
-        android:id="@+id/text"
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:text="CONFIGURATE YOUR CHAT"
-        android:textSize="20sp"
-        android:layout_marginTop="59dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/sendingLanguage"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:text="Sending language:"
-        android:textSize="20sp"
-        android:layout_below="@+id/nickName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="59dp"
+            android:text="CONFIGURATE YOUR CHAT"
+            android:textSize="20sp" />
 
-    <Spinner
-        android:id="@+id/sendingLanguageDropDown"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:layout_below="@id/sendingLanguage"
-        android:spinnerMode="dropdown"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp" />
+        <TextView
+            android:id="@+id/sendingLanguage"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/nickName"
+            android:text="Sending language:"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/receivingLanguage"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:text="Receiving language:"
-        android:textSize="20sp"
-        android:layout_below="@id/sendingLanguageDropDown"/>
+        <Spinner
+            android:id="@+id/sendingLanguageDropDown"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/sendingLanguage"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
 
-    <Spinner
-        android:id="@+id/receivingLanguageDropDown"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:layout_below="@id/receivingLanguage"
-        android:spinnerMode="dropdown"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp" />
+        <TextView
+            android:id="@+id/receivingLanguage"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/sendingLanguageDropDown"
+            android:text="Receiving language:"
+            android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:textSize="20sp"
-        android:text="Save"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/receivingLanguageDropDown"
-        android:layout_alignEnd="@+id/receivingLanguageDropDown" />
+        <Spinner
+            android:id="@+id/receivingLanguageDropDown"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/receivingLanguage"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignEnd="@+id/receivingLanguageDropDown"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/receivingLanguageDropDown"
+            android:text="Save"
+            android:textSize="20sp" />
+    </RelativeLayout>
 
 </RelativeLayout>
