@@ -13,7 +13,8 @@
     where the messages will be following in the 'message' layout
 
     -->
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"
