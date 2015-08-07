@@ -53,6 +53,21 @@ public class ConfigurationActivity extends AppCompatActivity {
         nickName = (TextView) findViewById(R.id.nickName);
         nickNameEdit = (EditText) findViewById(R.id.nickNameEdit);
 
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                nickNameEdit.setText((String) snapshot.child("nickname").getValue());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
+
+
         sendingLanguage = (TextView) findViewById(R.id.sendingLanguage);
         sendingLanguageDropDown = (Spinner) findViewById(R.id.sendingLanguageDropDown);
         receivingLanguage = (TextView) findViewById(R.id.receivingLanguage);
