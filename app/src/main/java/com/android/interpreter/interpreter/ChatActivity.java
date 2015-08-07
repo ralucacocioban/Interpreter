@@ -73,31 +73,31 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         // Setting up the correct root reference, giving a Conversation.
-//        Firebase.setAndroidContext(this);
-//        conversationref = new Firebase("");     // TODO - Place the correct URL here.
-//
-//        conversationref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot snapshot) {
-//
-//                // TODO - optimize this if needed
-//                Message current;
-//                ArrayList<Message> newmessages = new ArrayList<>((int) snapshot.getChildrenCount());
-//                for(DataSnapshot messageSnapshot : snapshot.getChildren()) {
-//                    current = messageSnapshot.getValue(Message.class);
-//                    newmessages.add(current);
-//                }
-//
-//                messages = newmessages;
-//
-//                messageListAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//                System.out.println("The read failed: " + firebaseError.getMessage());
-//            }
-//        });
+        Firebase.setAndroidContext(this);
+        conversationref = new Firebase("");     // TODO - Place the correct URL here.
+
+        conversationref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                // TODO - optimize this if needed
+                Message current;
+                ArrayList<Message> newmessages = new ArrayList<>((int) snapshot.getChildrenCount());
+                for(DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                    current = messageSnapshot.getValue(Message.class);
+                    newmessages.add(current);
+                }
+
+                messages = newmessages;
+
+                messageListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
 
     }
 

@@ -11,4 +11,10 @@ public class Config {
 
     public static final String[] sendLanguageArray = new String[]{"English", "Russian", "Ukrainian", "Polish", "Dutch", "Romanian"};
     public static final String[] receiveLanguageArray = new String[]{"English", "Russian", "Ukrainian", "Polish", "Dutch", "Romanian"};
+
+    public static final String SERVER_API_KEY = "AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY";
+    public static final String CLIENT_API_KEY = "545042974867";
+
+    public static final String SENT_MESSAGE = "message";
+    public static final String SENDER_USER_NAME = "senderName";
 }

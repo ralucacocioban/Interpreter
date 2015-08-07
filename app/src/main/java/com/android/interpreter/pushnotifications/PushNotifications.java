@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.interpreter.Config;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
@@ -14,14 +15,12 @@ import com.google.android.gms.iid.InstanceID;
  * Created by demouser on 8/6/15.
  */
 public class PushNotifications {
-    public static final String SERVER_API_KEY = "AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY";
-    public static final String CLIENT_API_KEY = "545042974867";
 
     public void sendMessage(String deviceId) {
-        //TODO: commit it
-        deviceId = "APA91bGiRaramjyohc2lKjAgFGpzBwtEmI8tJC30O89C2b3IjP1CuMeU1h9LMjKhmWuZwcXZjy1eqC4cE0tWBNt61Kx_SuMF6awzIt8WNq_4AfwflaVPHQ0wYHG_UX3snjp_U-5kJkmysdRlN6T8xChB1n3DtIq98w";
+        //TODO: comment it
+        //deviceId = "APA91bGiRaramjyohc2lKjAgFGpzBwtEmI8tJC30O89C2b3IjP1CuMeU1h9LMjKhmWuZwcXZjy1eqC4cE0tWBNt61Kx_SuMF6awzIt8WNq_4AfwflaVPHQ0wYHG_UX3snjp_U-5kJkmysdRlN6T8xChB1n3DtIq98w";
         try {
-            Sender sender = new Sender(SERVER_API_KEY);
+            Sender sender = new Sender(Config.SERVER_API_KEY);
 
             //ArrayList<String> devicesList = new ArrayList<String>();
             //add you deviceID
@@ -36,7 +35,8 @@ public class PushNotifications {
                     //.collapseKey("message")
                     //.timeToLive(241000)
                     .delayWhileIdle(true)
-                    .addData("message", "Your message send")
+                    .addData(Config.SENT_MESSAGE, "Your message send")
+                    .addData(Config.SENDER_USER_NAME, "Sender name")
                     .build();
 
             System.out.println("####message: " + message);
@@ -54,7 +54,7 @@ public class PushNotifications {
             InstanceID instanceID = InstanceID.getInstance(context);
 
             System.out.println("####instanceID: " + instanceID);
-            String token = instanceID.getToken(CLIENT_API_KEY, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+            String token = instanceID.getToken(Config.CLIENT_API_KEY, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             return token;
         } catch (Exception e) {
             throw new RuntimeException(e);
