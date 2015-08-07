@@ -15,7 +15,7 @@ public class Config {
 
     public static final String[] sendLanguageArray = new String[]{"English", "Russian", "Ukrainian", "Polish", "Dutch", "Romanian"};
     public static final String[] receiveLanguageArray = new String[]{"English", "Russian", "Ukrainian", "Polish", "Dutch", "Romanian"};
-    public static final HashMap<String,String> langCodes = new HashMap<String, String>()
+    private static final HashMap<String,String> langCodes = new HashMap<String, String>()
     {{     put("English",   "en");
                 put("Russian",  "rus");
                 put("Ukrainian","uk");
@@ -23,4 +23,8 @@ public class Config {
                 put("Dutch",    "nl");
                 put("Romanian", "ro");
             }};
+
+    public static String getLangCode(String lang){
+        return langCodes.get(lang);
+    }
 }
