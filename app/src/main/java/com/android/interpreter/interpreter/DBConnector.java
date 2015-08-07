@@ -12,8 +12,8 @@ public class DBConnector {
     }
 
     public static String getPathToUser(String userId) {
-        String path = String.format("%s/%s", Config.usersFirebasePath, userId);
-        return path;
+//        String path = String.format("%s/%s/", Config.usersFirebasePath, userId);
+        return Config.usersFirebasePath+userId;
     }
 
     public static String getPathToConversationsOf(String userId) {
