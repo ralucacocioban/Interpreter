@@ -22,7 +22,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,16 +55,19 @@ public class ChatActivity extends AbstractActivity {
 
     Message newMessage;
 
-    GoogleTranslate translator = null;
+    GoogleTranslate translator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        
+
+        Firebase.setAndroidContext(this);
 
         SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
         final String currentUser = settings.getString("CURRENT_USER", null);
+
+        System.out.println("in chatttt " + currentUser);
 
         Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
 
@@ -102,26 +104,24 @@ public class ChatActivity extends AbstractActivity {
 //        }
 
         // Setting up the correct root reference, giving a Conversation.
-        Firebase.setAndroidContext(this);
+
         senderID = getIntent().getStringExtra(SENDER_ID);
         receiverID = getIntent().getStringExtra(RECEIVER_ID);
         conversationHereRef = new Firebase (DBConnector.getPathToMessages(senderID, receiverID));
         conversationOtherRef = new Firebase (DBConnector.getPathToMessages(receiverID, senderID));
-
 
         conversationHereRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
                 Message current;
-                ArrayList<Message> newmessages = new ArrayList<>((int) snapshot.getChildrenCount());
+                ArrayList<Message> newmessages = new ArrayList<>();
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
                     current = messageSnapshot.getValue(Message.class);
                     newmessages.add(current);
                 }
 
                 messages = newmessages;
-
                 messageListAdapter.notifyDataSetChanged();
             }
 
@@ -129,11 +129,10 @@ public class ChatActivity extends AbstractActivity {
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
-
         });
 
         //create connection to Google Translate API
-        new createTranslator().execute();
+
 
     }
 
@@ -210,6 +209,7 @@ public class ChatActivity extends AbstractActivity {
 
                             String targetlanguage = current_user.getReceivingLanguage();
 
+                            new createTranslator().execute();
                             String translatedText = translator.translate(messages.get(position).getMessage(), Config.getLangCode(originallanguage), Config.getLangCode(targetlanguage));
 
 
@@ -238,6 +238,7 @@ public class ChatActivity extends AbstractActivity {
             }
             else {
                 String targetlanguage = current_user.getReceivingLanguage();
+                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
                 holder.content.setText(translator.translate(messages.get(position).getMessage(),
                                 Config.getLangCode(messages.get(position).getOriginalLanguage()), Config.getLangCode(targetlanguage))
                 );
@@ -255,14 +256,20 @@ public class ChatActivity extends AbstractActivity {
         }
     }
 
-    private class createTranslator extends AsyncTask<Void, Void, Void> {
+    private class createTranslator extends AsyncTask<Void, Void, String> {
 
         @Override
         protected Void doInBackground(Void... params) {
 
             try {
-                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
-                Thread.sleep(1000);
+//                params(0);
+//                params(1);
+//                translator = new GoogleTranslate("AIzaSyCXQPEmG2qw5C5iPCDWi3KieBzM7WtyIQY");
+//                String result = translator.translate();
+//
+//
+//                return result;
+                Thread.sleep(2000);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

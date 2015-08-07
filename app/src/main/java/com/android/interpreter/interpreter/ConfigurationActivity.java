@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.interpreter.Config;
 import com.android.interpreter.Helper;
 import com.android.interpreter.util.User;
@@ -53,6 +52,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         nickName = (TextView) findViewById(R.id.nickName);
         nickNameEdit = (EditText) findViewById(R.id.nickNameEdit);
 
+        System.out.println("current user in chat " + currentUser);
         Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -65,8 +65,6 @@ public class ConfigurationActivity extends AppCompatActivity {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
-
-
 
         sendingLanguage = (TextView) findViewById(R.id.sendingLanguage);
         sendingLanguageDropDown = (Spinner) findViewById(R.id.sendingLanguageDropDown);
