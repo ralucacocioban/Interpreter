@@ -83,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("CURRENT_USER", authData.getUid());
 
                         Firebase userRef = new Firebase(DBConnector.getPathToUser(authData.getAuth().get("uid").toString()));
+
+                        System.out.println("sa vedem " + (String) userRef.child("email").getValue());
                         Firebase f = new Firebase(DBConnector.getPathToAllUsers());
 
                         System.out.println(authData);

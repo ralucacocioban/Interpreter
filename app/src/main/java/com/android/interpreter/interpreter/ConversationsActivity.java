@@ -35,8 +35,7 @@ public class ConversationsActivity extends AbstractActivity {
     private ListView mList;
     private MyAdapter mAdapter;
     private List<Conversation> conversations = new ArrayList<>();
-
-    private User currentUser;
+    private User current_user;
 
     private void handleConversations(String userId) {
 
@@ -87,16 +86,8 @@ public class ConversationsActivity extends AbstractActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
 
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    System.out.println("test");
-                    System.out.println("test");
-                    System.out.println("test");
-                    String key = snapshot.getKey();
-                    String field = postSnapshot.getValue().toString();
-                    System.out.println(field + "     this is the receiving language  " + "   key:  " + key);
-                }
-
-                mAdapter.notifyDataSetChanged();
+                current_user = new User(snapshot.child("email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
+                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue().toString());
             }
 
             @Override

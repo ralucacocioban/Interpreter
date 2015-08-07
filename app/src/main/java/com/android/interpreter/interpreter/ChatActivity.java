@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,8 @@ public class ChatActivity extends AbstractActivity {
     // Reference in Firebase we start.
     Firebase conversationHereRef;
     Firebase conversationOtherRef;
+
+    Message newMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,18 +94,31 @@ public class ChatActivity extends AbstractActivity {
 
     public void sendMessage(View view) {
 
-        Message newMessage = new Message();
+        newMessage = new Message();
         EditText et = (EditText) findViewById(R.id.new_message);
         newMessage.setMessage(String.valueOf(et.getText()));
         newMessage.setDate(new Date());
 
         SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
-        final String currentUser = settings.getString("CURRENT_USER", null);
-        newMessage.setSenderID(currentUser);
+        final String currentUserID = settings.getString("CURRENT_USER", null);
+        newMessage.setSenderID(currentUserID);
 
-        // TODO - set originalLanguage of the message;
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUserID));
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                newMessage.setOriginalLanguage((String) dataSnapshot.child("sendingLanguage").getValue());
+            }
 
-        conversationHereRef.push().setValue(newMessage);
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+                // TODO - set originalLanguage of the message;
+
+                conversationHereRef.push().setValue(newMessage);
         conversationOtherRef.push().setValue(newMessage);
 
         // Create the sent text from the EditText

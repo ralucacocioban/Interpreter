@@ -90,8 +90,6 @@ public class SearchActivity extends AbstractActivity {
                 firstMessage.setSenderID(senderID);
                 firstMessage.setDate(new Date());
 
-                System.out.println(firstMessage.getDate().toString());
-
                 // We need to add the conversations (twice)
                 Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
                 Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
