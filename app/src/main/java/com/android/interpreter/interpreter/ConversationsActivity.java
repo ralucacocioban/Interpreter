@@ -49,12 +49,12 @@ public class ConversationsActivity extends AbstractActivity {
                 System.out.println("There are " + snapshot.getChildrenCount() + " messages");
                 System.out.println("on data changeee");
 
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Conversation conversation = postSnapshot.getValue(Conversation.class);
-                    conversations.add(conversation);
-                    System.out.println(conversation.getReceivingLanguage()+ "     this is the receiving language  ");
-                }
-                mAdapter.notifyDataSetChanged();
+//                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                    Conversation conversation = postSnapshot.getValue(Conversation.class);
+//                    conversations.add(conversation);
+//                    System.out.println(conversation.getReceivingLanguage()+ "     this is the receiving language  ");
+//                }
+//                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -87,7 +87,7 @@ public class ConversationsActivity extends AbstractActivity {
                 System.out.println(snapshot.getValue());
 
                 current_user = new User(snapshot.child("email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
-                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue().toString());
+                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue(String.class));
             }
 
             @Override
