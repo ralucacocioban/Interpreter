@@ -47,11 +47,26 @@ public class ConfigurationActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         nickName = (TextView) findViewById(R.id.nickName);
         nickNameEdit = (EditText) findViewById(R.id.nickNameEdit);
+
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                nickNameEdit.setText((String) snapshot.child("nickname").getValue());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
+
 
         sendingLanguage = (TextView) findViewById(R.id.sendingLanguage);
         sendingLanguageDropDown = (Spinner) findViewById(R.id.sendingLanguageDropDown);

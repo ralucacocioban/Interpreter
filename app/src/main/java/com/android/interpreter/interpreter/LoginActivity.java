@@ -35,9 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         loginButton = (Button) findViewById(R.id.login_btn);
         email = (TextView) findViewById(R.id.email_input);
@@ -49,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         rootRef = new Firebase(Config.mainFireBaseRef);
     }
-
 
     public void newUser(View view) {
         password2.setVisibility(View.VISIBLE);
