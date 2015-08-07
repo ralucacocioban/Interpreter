@@ -22,10 +22,11 @@
 
             <ImageButton
                 android:id="@+id/action_settings"
+                android:visibility="invisible"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="300dp"
-                android:icon="@drawable/ic_settings_white_24dp"
+                android:icon="@drawable/settings"
                 android:orderInCategory="100"
                 android:title="@string/action_settings"
                 android:layout_gravity="right"/>

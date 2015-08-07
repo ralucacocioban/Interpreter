@@ -40,6 +40,7 @@ public class ChatActivity extends AbstractActivity {
     // Parts needed for the UI, where all the messages are stored in 'messages'.
     private ListView messageList;
     ImageButton imageButton;
+    ImageButton action_settings;
     private MessageListAdapter messageListAdapter;
     private ArrayList<Message> messages = new ArrayList<>();
 
@@ -67,6 +68,15 @@ public class ChatActivity extends AbstractActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChatActivity.this, ConversationsActivity.class);
+                startActivity(intent);
+            }
+        });
+        action_settings = (ImageButton)findViewById(R.id.action_settings);
+        action_settings.setVisibility(View.VISIBLE);
+        action_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatActivity.this, ConfigurationMessageActivity.class);
                 startActivity(intent);
             }
         });

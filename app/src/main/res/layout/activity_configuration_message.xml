@@ -45,8 +45,9 @@
             android:layout_below="@id/sendingLanguage"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:background="#B2DFDB"/>
+
 
         <TextView
             android:id="@+id/receivingLanguage"
@@ -63,7 +64,7 @@
             android:layout_below="@id/receivingLanguage"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:background="@android:drawable/btn_dropdown"
+            android:background="#B2DFDB"
             android:spinnerMode="dropdown" />
 
         <Button
