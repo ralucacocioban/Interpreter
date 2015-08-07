@@ -42,8 +42,8 @@ public class ConfigurationActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         nickName = (TextView) findViewById(R.id.nickName);
         nickNameEdit = (EditText) findViewById(R.id.nickNameEdit);

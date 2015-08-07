@@ -50,7 +50,7 @@ public class ConversationsActivity extends AbstractActivity {
         handleConversations();
 
 
-        getAllConversations
+        //getAllConversations
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
