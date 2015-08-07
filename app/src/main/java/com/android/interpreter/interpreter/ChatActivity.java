@@ -116,12 +116,10 @@ public class ChatActivity extends AbstractActivity {
             }
         });
 
-                // TODO - set originalLanguage of the message;
-
-                conversationHereRef.push().setValue(newMessage);
+        conversationHereRef.push().setValue(newMessage);
         conversationOtherRef.push().setValue(newMessage);
 
-        // Create the sent text from the EditText
+        // Delete the sent text from the EditText
         et.setText("");
     }
 
