@@ -1,5 +1,6 @@
 package com.android.interpreter.interpreter;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,7 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.interpreter.Config;
 import com.android.interpreter.interpreter.R;
+import com.android.interpreter.util.Message;
 
 import java.util.ArrayList;
 
@@ -35,7 +38,18 @@ public class SearchActivity extends AbstractActivity {
         initiateChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // INITIATE NEW CHAT AND GO TO CHAT VIEW.
+                // TODO - INITIATE NEW CHAT AND GO TO CHAT VIEW.
+                // Create a first message.
+                Message firstMessage = new Message();
+                firstMessage.setMessage("Hello, I want to chat with you!");
+                firstMessage.setOriginalLanguage("en");
+                SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                firstMessage.setSenderID(settings.getString("CURRENT_USER", null));
+                firstMessage.getDate();
+
+                Firebase f = new Firebase ()
+
+
             }
         });
 

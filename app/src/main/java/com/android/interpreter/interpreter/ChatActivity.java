@@ -1,6 +1,7 @@
 package com.android.interpreter.interpreter;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.android.interpreter.Config;
 import com.android.interpreter.util.Message;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -46,7 +48,6 @@ public class ChatActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        getActionBar().setDisplayUseLogoEnabled(true);
 
         messageList = (ListView) findViewById(R.id.messages);
         messageListAdapter = new MessageListAdapter();
@@ -63,7 +64,7 @@ public class ChatActivity extends AbstractActivity {
                 // TODO - optimize this if needed
                 Message current;
                 ArrayList<Message> newmessages = new ArrayList<>((int) snapshot.getChildrenCount());
-                for(DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
                     current = messageSnapshot.getValue(Message.class);
                     newmessages.add(current);
                 }
@@ -90,20 +91,20 @@ public class ChatActivity extends AbstractActivity {
         EditText et = (EditText) findViewById(R.id.new_message);
         newMessage.setMessage(String.valueOf(et.getText()));
         newMessage.setDate(new Date());
-        // TODO - set Sender of the Message
+
+        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+        final String currentUser = settings.getString("CURRENT_USER", null);
+        newMessage.setSenderID(currentUser);
+
         // TODO - set originalLanguage of the message;
 
         // TODO - Check whether this is ok.
+        // SO, update, we are going to put it in two conversations....
         messageRef.push().setValue(newMessage);
 
         // Create the sent text from the EditText
         et.setText("");
     }
-
-
-
-
-    // CLASSES
 
 
     /**
@@ -133,8 +134,13 @@ public class ChatActivity extends AbstractActivity {
 
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(ChatActivity.this);
+
+                // Here we get the currentUserID and then compare it with the sender of the message.
+                SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+                final String currentUser = settings.getString("CURRENT_USER", null);
+
                 // When the current user is the sender of this message, the message is placed right.
-                if (true) { // TODO - check whether we send or received this particular message.
+                if (currentUser.equals(messages.get(position).getSenderID())) {
                     view = inflater.inflate(R.layout.message_outgoing, null);
                 }
                 // Otherwise, when the current user is the receiver, the message is placed left
