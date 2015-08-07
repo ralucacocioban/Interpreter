@@ -74,6 +74,8 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("CURRENT_USER", result.get("uid").toString());
 
+                    System.out.println("user before putting to preferences " + result.get("uid").toString());
+
                     Firebase ref = new Firebase(Config.mainFireBaseRef);
 
                     AuthData authData = ref.getAuth();
@@ -88,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         User currentUser = new User(authData.getProviderData().get("email").toString(), authData.getAuth().get("uid").toString(), "", "", "", "");
                         f.push().setValue(currentUser);
-                        userRef.push().setValue(currentUser);
+                        userRef.setValue(currentUser);
                     }
 
                     editor.commit();
