@@ -113,13 +113,21 @@ public class SearchActivity extends AbstractActivity {
                 // We need to add the conversations (twice)
                 Firebase conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(senderID));
 
+                System.out.println("in search activirty");
+                System.out.println("in search activirty");
+                System.out.println("in search activirty");
+                System.out.println("in search activirty");
+                System.out.println(current_user.getReceivingLanguage());
+                System.out.println(current_user.getSendingLanguage());
+                System.out.println(current_user.getNickname());
 
                 Conversation conv = new Conversation(current_user.getReceivingLanguage(), current_user.getSendingLanguage(), current_user.getUid(), senderID);
                 conversationOfRef.push().setValue(conv);
 
 
                 conversationOfRef = new Firebase(DBConnector.getPathToConversationsOf(receiverID));
-                conversationOfRef.push().setValue(senderID);
+                Conversation conv2 = new Conversation(current_user.getReceivingLanguage(), current_user.getSendingLanguage(), current_user.getUid(), receiverID);
+                conversationOfRef.push().setValue(conv2);
 
                 // Now we add the first message to this conversation.
                 Firebase chatRef = new Firebase(DBConnector.getPathToMessages(senderID, receiverID));

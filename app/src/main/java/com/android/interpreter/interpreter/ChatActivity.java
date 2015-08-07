@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.android.interpreter.Config;
 import com.android.interpreter.util.Message;
+import com.android.interpreter.util.User;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -35,6 +36,8 @@ public class ChatActivity extends AbstractActivity {
 
     public final static String SENDER_ID = "sender";
     public final static String RECEIVER_ID = "receiver";
+    public User current_user;
+
 
     // Parts needed for the UI, where all the messages are stored in 'messages'.
     private ListView messageList;
@@ -57,6 +60,28 @@ public class ChatActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+
+        SharedPreferences settings = getSharedPreferences(Config.PREFS_NAME, 0);
+        final String currentUser = settings.getString("CURRENT_USER", null);
+
+        Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());
+
+                current_user = snapshot.getValue(User.class);
+// "email").getValue().toString(), snapshot.child("uid").getValue().toString(), snapshot.child("receivingLanguage").getValue().toString(),
+//                        snapshot.child("sendingLanguage").getValue().toString(), snapshot.child("nickname").getValue().toString(), snapshot.child("GCMtoken").getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
 
         messageList = (ListView) findViewById(R.id.messages);
         messageListAdapter = new MessageListAdapter();
