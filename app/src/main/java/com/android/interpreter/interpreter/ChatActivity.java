@@ -41,6 +41,9 @@ public class ChatActivity extends AbstractActivity {
     private MessageListAdapter messageListAdapter;
     private ArrayList<Message> messages = new ArrayList<>();
 
+    String receiverID;
+    String senderID;
+
     // This will be the format we will use at the bottom of the message, displaying the date.
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
@@ -61,8 +64,8 @@ public class ChatActivity extends AbstractActivity {
 
         // Setting up the correct root reference, giving a Conversation.
         Firebase.setAndroidContext(this);
-        String senderID = getIntent().getStringExtra(SENDER_ID);
-        String receiverID = getIntent().getStringExtra(RECEIVER_ID);
+        senderID = getIntent().getStringExtra(SENDER_ID);
+        receiverID = getIntent().getStringExtra(RECEIVER_ID);
         conversationHereRef = new Firebase (DBConnector.getPathToMessages(senderID, receiverID));
         conversationOtherRef = new Firebase (DBConnector.getPathToMessages(receiverID, senderID));
 
@@ -163,6 +166,42 @@ public class ChatActivity extends AbstractActivity {
                 // Otherwise, when the current user is the receiver, the message is placed left
                 else {
                     view = inflater.inflate(R.layout.message_incoming, null);
+
+                    view.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+
+                            //TODO - create beautifull transition to message details
+                            final Intent showDetails = new Intent(ChatActivity.this, MessageDetailsActivity.class);
+                            String originallanguage = messages.get(position).getOriginalLanguage();
+                            showDetails.putExtra(MessageDetailsActivity.ORIGINAL_LANGUAGE, originallanguage);
+                            showDetails.putExtra(MessageDetailsActivity.ORIGINAL_CONTENT, messages.get(position).getMessage());
+
+                            Firebase userRef = new Firebase(DBConnector.getPathToUser(currentUser));
+                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, (String) dataSnapshot.child("receivingLanguage").getValue());
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
+
+
+                            String targetlanguage = showDetails.getStringExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE);
+                            // DO YOUR MAGIC
+
+                            String translatedText = null;
+
+                            showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, translatedText);
+                            startActivity(showDetails);
+
+                            return true;
+                        }
+                    });
                 }
 
                 holder = new ViewHolder();
@@ -170,24 +209,6 @@ public class ChatActivity extends AbstractActivity {
                 holder.date = (TextView) view.findViewById(R.id.date);
                 view.setTag(holder);
 
-                view.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-
-                        //TODO - create beautifull transition to message details
-                        Intent showDetails = new Intent(ChatActivity.this, MessageDetailsActivity.class);
-                        showDetails.putExtra(MessageDetailsActivity.ORIGINAL_LANGUAGE, messages.get(position).getOriginalLanguage());
-                        showDetails.putExtra(MessageDetailsActivity.ORIGINAL_CONTENT, messages.get(position).getMessage());
-                        // TODO - Get the translate language and translated content
-                        showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, "");
-                        showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, "");
-                        // TODO - discuss whether we want the Date of the message as well in the detailled view.
-
-                        startActivity(showDetails);
-
-                        return true;
-                    }
-                });
 
             } else {
                 view = convertView;
