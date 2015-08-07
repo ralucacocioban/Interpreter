@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.interpreter.Config;
 import com.android.interpreter.util.GoogleTranslate;
@@ -69,7 +70,6 @@ public class ChatActivity extends AbstractActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
                 current_user = snapshot.getValue(User.class);
             }
 
@@ -202,11 +202,8 @@ public class ChatActivity extends AbstractActivity {
                             showDetails.putExtra(MessageDetailsActivity.ORIGINAL_CONTENT, messages.get(position).getMessage());
                             showDetails.putExtra(MessageDetailsActivity.TRANSLATE_LANGUAGE, current_user.getReceivingLanguage());
 
-
                             String targetlanguage = current_user.getReceivingLanguage();
-
                             String translatedText = translator.translate(messages.get(position).getMessage(), originallanguage, targetlanguage);
-                            ;
 
                             showDetails.putExtra(MessageDetailsActivity.TRANSLATE_CONTENT, translatedText);
                             startActivity(showDetails);
@@ -221,7 +218,6 @@ public class ChatActivity extends AbstractActivity {
                 holder.date = (TextView) view.findViewById(R.id.date);
                 view.setTag(holder);
 
-
             } else {
                 view = convertView;
                 holder = (ViewHolder) view.getTag();
@@ -234,8 +230,6 @@ public class ChatActivity extends AbstractActivity {
             }
             else {
                 String targetlanguage = current_user.getReceivingLanguage();
-
-
                 holder.content.setText(translator.translate(messages.get(position).getMessage(),
                         messages.get(position).getOriginalLanguage(), targetlanguage)
                 );
